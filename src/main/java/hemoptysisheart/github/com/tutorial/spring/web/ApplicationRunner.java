@@ -2,6 +2,7 @@
  * @author hemoptysisheart
  * @since 2018. 5. 22.
  */
+package hemoptysisheart.github.com.tutorial.spring.web; // 패키지를 지정해서 모듈 의존성 정보가 없는 클래스를 읽으려 하는 문제를 해결한다.
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
