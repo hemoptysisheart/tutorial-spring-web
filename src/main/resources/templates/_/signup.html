@@ -23,24 +23,36 @@
             <input type="email" id="email"
                    form="form-signup" required="required"
                    th:field="*{email}"/>
+            <ul th:if="${#fields.hasErrors('email')}">
+                <li th:each="err : ${#fields.errors('email')}" th:text="${err}">error</li>
+            </ul>
         </div>
         <div>
             <label for="nickname">NICKNAME</label>
             <input id="nickname"
                    form="form-signup" required="required"
                    th:field="*{nickname}"/>
+            <ul th:if="${#fields.hasErrors('nickname')}">
+                <li th:each="err : ${#fields.errors('nickname')}" th:text="${err}">error</li>
+            </ul>
         </div>
         <div>
             <label for="password">PASSWORD</label>
             <input type="password" id="password"
                    form="form-signup" required="required" pattern=".{4,}"
                    th:field="*{password}"/>
+            <ul th:if="${#fields.hasErrors('password')}">
+                <li th:each="err : ${#fields.errors('password')}" th:text="${err}">error</li>
+            </ul>
         </div>
         <div>
             <label for="confirm">PW CONFIRM</label>
             <input type="password" id="confirm"
-                   form="form-signup"
+                   form="form-signup" required="required" pattern=".{4,}"
                    th:field="*{confirm}"/>
+            <ul th:if="${#fields.hasErrors('confirm')}">
+                <li th:each="err : ${#fields.errors('confirm')}" th:text="${err}">error</li>
+            </ul>
         </div>
         <div>
             <button form="form-signup">SUBMIT</button>
