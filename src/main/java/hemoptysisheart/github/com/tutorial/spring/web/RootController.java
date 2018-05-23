@@ -4,6 +4,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.time.ZonedDateTime;
+
 /**
  * 루트 페이지를 모아 제공하는 컨트롤러.
  * 컨트롤러 인터페이스/클래스는 어떤 URL 그룹에 해당한다.
@@ -21,6 +23,9 @@ public class RootController {
      */
     @GetMapping
     public String index(final Model model) {
+        // 별도의 로직이 필요없는 현재 시각 정보를 뷰로 넘긴다.
+        model.addAttribute("timestamp", ZonedDateTime.now());
+
         // 뷰 템플릿 출력을 시험하기 위해 다른 로직 없이 템플릿 이름을 리턴한다.
         return "_/index";
     }

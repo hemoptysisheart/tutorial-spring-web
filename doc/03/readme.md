@@ -123,3 +123,61 @@ public class RootController {
 ```
 
 [전체 구조](step_2_tree.txt)
+
+## STEP 3 - 로직의 데이터 출력하기
+
+달리 로직이 없으므로, 컨트롤러에서 얻을 수 있는 간단한 데이터를 출력해서 뷰 템플릿 엔진이 정상적으로 작동함을 확인한다.
+
+```java
+package hemoptysisheart.github.com.tutorial.spring.web;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+
+import java.time.ZonedDateTime;
+
+@Controller
+public class RootController {
+    @GetMapping
+    public String index(final Model model) {
+        model.addAttribute("timestamp", ZonedDateTime.now());
+        return "_/index";
+    }
+}
+```
+
+컨트롤러가 모델에 타임스탬프를 추가해서(`model.addAttribute("timestamp", ZonedDateTime.now())`) 뷰에 전달한다.
+
+```xml
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Index</title>
+</head>
+<body>
+<h1>Index Page</h1>
+<p>Welcome!!!</p>
+<footer>
+    <dl>
+        <dt>TIMESTAMP</dt>
+        <dd>
+            <!--/*@thymesVar id="timestamp" type="java.time.ZonedDateTime"*/-->
+            <time th:datetime="${timestamp}"
+                  th:text="${#temporals.format(timestamp, 'yyyy-MM-dd HH:mm')}">timestamp
+            </time>
+        </dd>
+    </dl>
+</footer>
+</body>
+</html>
+```
+
+템플릿에 네임스페이스를 추가해서(`<html xmlns:th="http://www.thymeleaf.org">`),
+`th:` 네임스페이스를 쓸 수 있도록 한다.
+
+그리고 타임스탬프 어트리뷰트를 출력(`<time th:datetime="${timestamp}" th:text="${#temporals.format(timestamp, 'yyyy-MM-dd HH:mm')}">timestamp</time>`) 한다.
+템플릿에서 사용하는 `${timestamp}` 변수명은 컨트롤러에서 설정한 어트리뷰트 이름 `model.addAttribute("timestamp", ZonedDateTime.now())`과 같다.
+
+![타임스탬프를 페이지에 출력](step_3_timestamp_model_attribute_screenshot.png)
