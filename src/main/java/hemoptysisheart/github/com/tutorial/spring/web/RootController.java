@@ -3,7 +3,10 @@ package hemoptysisheart.github.com.tutorial.spring.web;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.validation.Valid;
 import java.time.ZonedDateTime;
 
 /**
@@ -28,5 +31,29 @@ public class RootController {
 
         // 뷰 템플릿 출력을 시험하기 위해 다른 로직 없이 템플릿 이름을 리턴한다.
         return "_/index";
+    }
+
+    /**
+     * 회원 가입 폼을 출력한다.
+     *
+     * @param model
+     * @return 회원가입 폼 템플릿 이름.
+     */
+    @GetMapping("/signup")
+    public String signUpForm(final Model model) {
+        model.addAttribute("signUpReq", new SignUpReq());
+        return "_/signup";
+    }
+
+    /**
+     * 회원 가입 요청을 처리한 후, 루트 페이지로 리다이렉트한다.
+     *
+     * @param signUpReq
+     * @param model
+     * @return 루트 페이지 리다이렉트 정보.
+     */
+    @PostMapping("/signup")
+    public String signUp(@ModelAttribute @Valid final SignUpReq signUpReq, final Model model) {
+        return "redirect:/";
     }
 }
