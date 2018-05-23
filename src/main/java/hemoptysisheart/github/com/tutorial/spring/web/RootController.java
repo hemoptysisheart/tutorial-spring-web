@@ -3,6 +3,7 @@ package hemoptysisheart.github.com.tutorial.spring.web;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -55,7 +56,11 @@ public class RootController {
      * @return 루트 페이지 리다이렉트 정보.
      */
     @PostMapping("/signup")
-    public String signUp(@ModelAttribute @Valid final SignUpReq signUpReq, final BindingResult binding, final Model model) {
+    public String signUp(@ModelAttribute("signUpReq") @Valid final SignUpReq signUpReq, final BindingResult binding, final Model model) {
+        if (!signUpReq.getPassword().equals(signUpReq.getConfirm())) {
+            binding.addError(new FieldError("signUpReq", "confirm", "password does not match."));
+        }
+
         if (binding.hasErrors()) {
             return "_/signup";
         } else {
