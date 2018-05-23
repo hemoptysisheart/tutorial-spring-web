@@ -15,10 +15,10 @@ public class SignUpReq {
     @Email
     private String email;
     @NotNull
-    @Size(min = 1)
+    @Size(min = 1)  // TODO 최소 길이를 상수로 변경.
     private String nickname;
     @NotNull
-    @Size(min = 4)
+    @Size(min = 4)  // TODO 최소 길이를 상수로 변경.
     private String password;
     @NotNull
     @Size(min = 4)

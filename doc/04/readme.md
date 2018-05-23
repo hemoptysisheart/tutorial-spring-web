@@ -67,7 +67,7 @@ public class SignUpReq {
 }
 ```
 
-회원가입 폼 출력에 사용한 템플릿(`_/signup`)을 추가한다.
+회원가입 폼 출력에 사용할 템플릿(`_/signup`)을 추가한다.
 
 ```html
 <!DOCTYPE html>
@@ -142,3 +142,44 @@ public class SignUpReq {
 ```
 
 [전체 구조](step_1_tree.txt)
+
+## STEP 2 - 검증 실패에 대응하기 : 1. 기본적인 검증 실패 처리하기
+
+HTML5 지원 브라우저의 검증기능을 사용해 서브밋 하기 전에 검증을 했지만, 테스트를 위해 일부를 삭제한다.
+비밀번호 재입력 컨트롤에서 `required`와 `pattern` 속성을 제거했다.
+
+```xml
+<div>
+    <label for="confirm">PW CONFIRM</label>
+    <input type="password" id="confirm" form="form-signup"
+           th:field="*{confirm}"/>
+</div>
+```
+
+컨트롤러에는 검증(validation) 결과를 모델 어트리뷰트가 아닌 인자로 받을 수 있도록 인자(`BindingResult binding`)를 추가한다.
+바인딩 인스턴스에 검증 에러가 있다면 다시 회원가입 폼을 출력한다.
+
+```java
+@PostMapping("/signup")
+public String signUp(@ModelAttribute @Valid final SignUpReq signUpReq, final BindingResult binding, final Model model) {
+    if (binding.hasErrors()) {
+        return "_/signup";
+    } else {
+        return "redirect:/";
+    }
+}
+```
+
+`@Size(min = 4)` 조건으로 4글자 이상을 입력해야 하는 `confirm` 필드에 값을 입력하지 않았다.
+임시로 HTML 폼에서 `required`, `pattern` 속성을 제거했기 때문에 브라우저에서 서브밋 할 수 있다.
+
+![회원 가입 폼의 검증 에러가 있는 입력 상태](step_2_signup_form_with_error.png)
+
+에러가 있기 때문에 `http://localhost:8080/`로 리다이렉트 되지 않고 회원가입 폼을 출력하되, 폼 입력값을 설정한 그대로 출력한다.
+단, `<input type="password" />`인 `password`, `confirm` 인풋 컨트롤은 값을 지정하지 않는다.
+`Status Code`가 `302` 혹은 `301`으로 `http://localhost:8080/signup`으로 리다이렉트 하지 않고,
+정상 상태인 `200`으로 응답하면서 HTTP 응답 본문에 직접 폼을 출력한다.
+
+![에러가 있는 상태에서 서브밋한 결과](step_2_signup_error.png)
+
+이번에는 템플릿 파일을 직접 수정해서 테스트했지만, 정상적인 경우라면 브라우저의 검증도구에서 속성을 수정 혹은 삭제해서 테스트 할 수 있다.

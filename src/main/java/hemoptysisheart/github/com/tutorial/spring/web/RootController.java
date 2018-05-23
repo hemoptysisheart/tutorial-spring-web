@@ -2,6 +2,7 @@ package hemoptysisheart.github.com.tutorial.spring.web;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -48,12 +49,17 @@ public class RootController {
     /**
      * 회원 가입 요청을 처리한 후, 루트 페이지로 리다이렉트한다.
      *
-     * @param signUpReq
+     * @param signUpReq 회원가입 폼 입력.
+     * @param binding   {@code signUpReq}의 검증 결과.
      * @param model
      * @return 루트 페이지 리다이렉트 정보.
      */
     @PostMapping("/signup")
-    public String signUp(@ModelAttribute @Valid final SignUpReq signUpReq, final Model model) {
-        return "redirect:/";
+    public String signUp(@ModelAttribute @Valid final SignUpReq signUpReq, final BindingResult binding, final Model model) {
+        if (binding.hasErrors()) {
+            return "_/signup";
+        } else {
+            return "redirect:/";
+        }
     }
 }
