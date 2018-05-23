@@ -181,3 +181,43 @@ public class RootController {
 템플릿에서 사용하는 `${timestamp}` 변수명은 컨트롤러에서 설정한 어트리뷰트 이름 `model.addAttribute("timestamp", ZonedDateTime.now())`과 같다.
 
 ![타임스탬프를 페이지에 출력](step_3_timestamp_model_attribute_screenshot.png)
+
+## STEP 4 - 컴파일도 필요없는데 재실행은 귀찮아
+
+Thymeleaf는 템플릿을 파싱한 결과를 캐시해서 메모리에 올려둔다. 즉, 템플릿을 수정하면 웹 애플리케이션을 재실행해야만 변경을 반영할 수 있다.
+임베디드 서블릿 컨테이너를 사용하며 재실행이 빨라지긴 했지만, 여전히 긴 시간이 필요하다.
+일단은 개발중에 편의성을 보장해야하므로 템플릿 캐싱을 중지하자.
+
+설정파일(`src/main/resources/application.yml`)을 추가하고, 캐싱 옵션을 끈다.
+
+```yaml
+spring:
+  thymeleaf:
+    cache: false
+```
+
+### 프로젝트 구조
+
+```
+./src/main
+├── java
+│   └── hemoptysisheart
+│       └── github
+│           └── com
+│               └── tutorial
+│                   └── spring
+│                       └── web
+│                           ├── ApplicationRunner.java
+│                           └── RootController.java
+└── resources
+    ├── application.yml
+    └── templates
+        └── _
+            └── index.html
+```
+
+[전체 구조](step_4_tree.txt)
+
+### 참고
+
+* [Appendix A. Common application properties](https://docs.spring.io/spring-boot/docs/2.0.2.RELEASE/reference/html/common-application-properties.html)
