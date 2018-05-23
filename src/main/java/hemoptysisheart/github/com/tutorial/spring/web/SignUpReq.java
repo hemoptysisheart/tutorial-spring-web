@@ -1,6 +1,7 @@
 package hemoptysisheart.github.com.tutorial.spring.web;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -11,11 +12,10 @@ import javax.validation.constraints.Size;
  * @since 2018. 5. 23.
  */
 public class SignUpReq {
-    @NotNull
+    @NotEmpty
     @Email
     private String email;
-    @NotNull
-    @Size(min = 1)  // TODO 최소 길이를 상수로 변경.
+    @NotEmpty
     private String nickname;
     @NotNull
     @Size(min = 4)  // TODO 최소 길이를 상수로 변경.
