@@ -301,3 +301,66 @@ ENGINE = InnoDB;
             └── signup.html
 ```
 [전체 구조](step_4_tree.txt)
+
+## STEP 5 - SQL(DML) 생성용 레포지토리 정의
+
+인터페이스만 정의하면 Spring Data JPA가 프록시를 사용해 자동으로 SQL로 매핑해주는 레포지토리 컴포넌트를 생성한다.
+`@Repository` 컴포넌트의 메서드는 `prepared statement`가 된다.
+
+```java
+package hemoptysisheart.github.com.tutorial.spring.web;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface AccountRepository extends JpaRepository<AccountEntity, Integer> {
+    AccountEntity findOneByEmail(String email);
+
+    AccountEntity findOneByNickname(String nickname);
+}
+```
+[AccountRepository.java](../../src/main/java/hemoptysisheart/github/com/tutorial/spring/web/AccountRepository.java)
+
+`AccountEntity findOneByNickname(String nickname)` 메서드의 경우 다음과 같은 의미가 되며,
+
+* `findOne` : 엔티티 1개를
+* `By` : 다음의 조건으로
+* `Nickname` : 엔티티의 `nickname` 필드가 메서드 인자인 `String nickname`과 같은 경우에 선택한다.
+
+인자 `nickname`의 값이 `"babo"` 라면 다음의 SQL이 실행된다.
+
+```sql
+SELECT
+    *
+FROM
+    `user_account`
+WHERE
+    `nickname` = 'babo'
+```
+
+### 프로젝트 구조
+
+```
+./src/main
+├── java
+│   └── hemoptysisheart
+│       └── github
+│           └── com
+│               └── tutorial
+│                   └── spring
+│                       └── web
+│                           ├── AccountEntity.java
+│                           ├── AccountRepository.java
+│                           ├── ApplicationRunner.java
+│                           ├── JpaConfiguration.java
+│                           ├── RootController.java
+│                           └── SignUpReq.java
+└── resources
+    ├── application.yml
+    └── templates
+        └── _
+            ├── index.html
+            └── signup.html
+```
+[전체 구조](step_5_tree.txt)
