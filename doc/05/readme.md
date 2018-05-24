@@ -175,7 +175,6 @@ public class JpaConfiguration {
             ├── index.html
             └── signup.html
 ```
-
 [전체 구조](step_3_tree.txt)
 
 ### 웹 애플리케이션 실행 로그
@@ -195,5 +194,110 @@ JPA, Hibernate, HikariCP 관련 로그를 볼 수 있다.
 2018-05-24 13:38:26.961  INFO 4195 --- [           main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
 2018-05-24 13:38:27.142  INFO 4195 --- [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
 ```
-
 [전체 로그](step_3_bootup.log)
+
+## STEP 4 - JPA Entity
+
+계정정보를 다룰 때 사용할 JPA 엔티티를 정의한다.
+
+* `@Entity` : 이 클래스의 인스턴스가 JPA 엔티티임을 표시하며, 엔티티 매니저가 어떤 이름으로 다룰 것인지를 지정한다.
+* `@Table` : 엔티티의 데이터를 동기화할 테이블의 정보. 테이블 이름과 인덱스를 포함한다.
+* `@Id` : 엔티티의 ID가 되는 필드.
+* `@GeneratedValue` : Java 로직이 아닌 다른 방식으로 값이 할당되는 필드.
+`strategy = GenerationType.IDENTITY`는 MySQL의 `AUTO_INCREMENT` 컬럼과 동기화 한다는 뜻.
+* `@Column` : 필드값이 하나의 컬럼과 동기화되는 경우에 컬럼의 정보를 제공한다.
+* `private AccountEntity() { ... }` : JPA는 인자 없는 생성자 메서드가 반드시 필요하다.
+Java 로직에서는 필요없으므로 `private`로 접근을 제한.
+
+```java
+package hemoptysisheart.github.com.tutorial.spring.web;
+
+import javax.persistence.*;
+
+import static java.lang.String.format;
+
+@Entity(name = "Account")
+@Table(name = "user_account",
+        uniqueConstraints = {@UniqueConstraint(name = "UQ_ACCOUNT_EMAIL", columnNames = {"email"}),
+                @UniqueConstraint(name = "UQ_ACCOUNT_NICKNAME", columnNames = {"nickname"})})
+public class AccountEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false, insertable = false, updatable = false)
+    private int id;
+    @Column(name = "email", unique = true, nullable = false, length = 255)
+    private String email;
+    @Column(name = "nickname", unique = true, nullable = false, length = 128)
+    private String nickname;
+    @Column(name = "passwd", nullable = false)
+    private String password;
+
+    private AccountEntity() {
+    }
+
+    public AccountEntity(String email, String nickname, String password) {
+        setEmail(email);
+        setNickname(nickname);
+        setPassword(password);
+    }
+
+    // ... getter & setter ...
+
+    @Override
+    public int hashCode() {
+        return this.id;
+    }
+
+    @Override
+    public boolean equals(Object that) {
+        if (0 < this.id && this == that) {
+            return true;
+        } else if (that instanceof AccountEntity && 0 < this.id) {
+            return this.id == ((AccountEntity) that).id;
+        } else {
+            return false;
+        }
+    }
+}
+```
+[AccountEntity.java](../../src/main/java/hemoptysisheart/github/com/tutorial/spring/web/AccountEntity.java)
+
+엔티티에 맞춰 테이블을 수정한다.
+
+```sql
+CREATE TABLE IF NOT EXISTS `tutorial_spring_web`.`user_account` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `email` VARCHAR(255) NOT NULL,
+  `nickname` VARCHAR(128) NOT NULL,
+  `passwd` VARCHAR(60) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `UQ_ACCOUNT_EMAIL` (`email` ASC),
+  UNIQUE INDEX `UQ_ACCOUNT_NICKNAME` (`nickname` ASC))
+ENGINE = InnoDB;
+```
+[DDL](../../db/tutorial_spring_web.sql)
+
+### 프로젝트 구조
+
+```
+./src/main
+├── java
+│   └── hemoptysisheart
+│       └── github
+│           └── com
+│               └── tutorial
+│                   └── spring
+│                       └── web
+│                           ├── AccountEntity.java
+│                           ├── ApplicationRunner.java
+│                           ├── JpaConfiguration.java
+│                           ├── RootController.java
+│                           └── SignUpReq.java
+└── resources
+    ├── application.yml
+    └── templates
+        └── _
+            ├── index.html
+            └── signup.html
+```
+[전체 구조](step_4_tree.txt)
