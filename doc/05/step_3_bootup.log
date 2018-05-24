@@ -1,0 +1,47 @@
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::        (v2.0.2.RELEASE)
+
+2018-05-24 13:38:25.283  INFO 4195 --- [           main] h.g.c.t.spring.web.ApplicationRunner     : Starting ApplicationRunner on MacBook-Pro.local with PID 4195 (/Users/hemoptysisheart/Repositories/github.com/hemoptysisheart/tutorial-spring-web/target/classes started by hemoptysisheart in /Users/hemoptysisheart/Repositories/github.com/hemoptysisheart/tutorial-spring-web)
+2018-05-24 13:38:25.287  INFO 4195 --- [           main] h.g.c.t.spring.web.ApplicationRunner     : No active profile set, falling back to default profiles: default
+2018-05-24 13:38:25.336  INFO 4195 --- [           main] ConfigServletWebServerApplicationContext : Refreshing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@2fc6f97f: startup date [Thu May 24 13:38:25 JST 2018]; root of context hierarchy
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.springframework.cglib.core.ReflectUtils$1 (file:/Users/hemoptysisheart/.m2/repository/org/springframework/spring-core/5.0.6.RELEASE/spring-core-5.0.6.RELEASE.jar) to method java.lang.ClassLoader.defineClass(java.lang.String,byte[],int,int,java.security.ProtectionDomain)
+WARNING: Please consider reporting this to the maintainers of org.springframework.cglib.core.ReflectUtils$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+2018-05-24 13:38:26.110  INFO 4195 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$3bfda551] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2018-05-24 13:38:26.317  INFO 4195 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2018-05-24 13:38:26.335  INFO 4195 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2018-05-24 13:38:26.335  INFO 4195 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet Engine: Apache Tomcat/8.5.31
+2018-05-24 13:38:26.338  INFO 4195 --- [ost-startStop-1] o.a.catalina.core.AprLifecycleListener   : The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [/Users/hemoptysisheart/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:.]
+2018-05-24 13:38:26.435  INFO 4195 --- [ost-startStop-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2018-05-24 13:38:26.435  INFO 4195 --- [ost-startStop-1] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1103 ms
+2018-05-24 13:38:26.512  INFO 4195 --- [ost-startStop-1] o.s.b.w.servlet.ServletRegistrationBean  : Servlet dispatcherServlet mapped to [/]
+2018-05-24 13:38:26.515  INFO 4195 --- [ost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'characterEncodingFilter' to: [/*]
+2018-05-24 13:38:26.615  INFO 4195 --- [           main] j.LocalContainerEntityManagerFactoryBean : Building JPA container EntityManagerFactory for persistence unit 'default'
+2018-05-24 13:38:26.624  INFO 4195 --- [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2018-05-24 13:38:26.681  INFO 4195 --- [           main] org.hibernate.Version                    : HHH000412: Hibernate Core {5.2.17.Final}
+2018-05-24 13:38:26.683  INFO 4195 --- [           main] org.hibernate.cfg.Environment            : HHH000206: hibernate.properties not found
+2018-05-24 13:38:26.714  INFO 4195 --- [           main] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.0.1.Final}
+2018-05-24 13:38:26.793  INFO 4195 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2018-05-24 13:38:26.950  INFO 4195 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2018-05-24 13:38:26.961  INFO 4195 --- [           main] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
+2018-05-24 13:38:27.142  INFO 4195 --- [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2018-05-24 13:38:27.261  INFO 4195 --- [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[],methods=[GET]}" onto public java.lang.String hemoptysisheart.github.com.tutorial.spring.web.RootController.index(org.springframework.ui.Model)
+2018-05-24 13:38:27.262  INFO 4195 --- [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/signup],methods=[GET]}" onto public java.lang.String hemoptysisheart.github.com.tutorial.spring.web.RootController.signUpForm(org.springframework.ui.Model)
+2018-05-24 13:38:27.262  INFO 4195 --- [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/signup],methods=[POST]}" onto public java.lang.String hemoptysisheart.github.com.tutorial.spring.web.RootController.signUp(hemoptysisheart.github.com.tutorial.spring.web.SignUpReq,org.springframework.validation.BindingResult,org.springframework.ui.Model)
+2018-05-24 13:38:27.267  INFO 4195 --- [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+2018-05-24 13:38:27.267  INFO 4195 --- [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2018-05-24 13:38:27.322  INFO 4195 --- [           main] s.w.s.m.m.a.RequestMappingHandlerAdapter : Looking for @ControllerAdvice: org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@2fc6f97f: startup date [Thu May 24 13:38:25 JST 2018]; root of context hierarchy
+2018-05-24 13:38:27.676  INFO 4195 --- [           main] o.s.j.e.a.AnnotationMBeanExporter        : Registering beans for JMX exposure on startup
+2018-05-24 13:38:27.677  INFO 4195 --- [           main] o.s.j.e.a.AnnotationMBeanExporter        : Bean with name 'dataSource' has been autodetected for JMX exposure
+2018-05-24 13:38:27.682  INFO 4195 --- [           main] o.s.j.e.a.AnnotationMBeanExporter        : Located MBean 'dataSource': registering with JMX server as MBean [com.zaxxer.hikari:name=dataSource,type=HikariDataSource]
+2018-05-24 13:38:27.707  INFO 4195 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2018-05-24 13:38:27.710  INFO 4195 --- [           main] h.g.c.t.spring.web.ApplicationRunner     : Started ApplicationRunner in 2.721 seconds (JVM running for 3.501)
