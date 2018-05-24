@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Index</title>
+</head>
+<body>
+<h1>Index Page</h1>
+<p>Welcome!!!</p>
+<footer>
+    <dl>
+        <dt>TIMESTAMP</dt>
+        <dd>
+            <!--/*@thymesVar id="timestamp" type="java.time.ZonedDateTime"*/-->
+            <time th:datetime="${timestamp}"
+                  th:text="${#temporals.format(timestamp, 'yyyy-MM-dd HH:mm VV')}">timestamp
+            </time>
+        </dd>
+    </dl>
+</footer>
+</body>
+</html>
