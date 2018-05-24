@@ -1,2 +1,6 @@
-# tutorial-spring-web
-Spring Boot Web Application 튜토리얼.
+# Spring Boot 웹 애플리케이션 튜토리얼
+
+가장 기본적 이면서도 고급 애플리케이션 개발에 필요한 기술이 대부분 필요한 게시판을 개발하는 튜토리얼.
+
+
+* [차례](doc/readme.md)
