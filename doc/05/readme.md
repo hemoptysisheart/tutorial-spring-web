@@ -60,3 +60,18 @@ DDL을 실행해 스키마를 생성한다.
 ```
 
 [전체 구조](step_1_tree.txt)
+
+## STEP 2 - 의존성 추가하기
+
+JPA의존성을 추가하고, DB 연결을 위해 커넥터를 추가한다.
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-data-jpa</artifactId>
+</dependency>
+<dependency>
+    <groupId>mysql</groupId>
+    <artifactId>mysql-connector-java</artifactId>
+</dependency>
+```
