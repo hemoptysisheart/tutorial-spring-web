@@ -68,7 +68,8 @@ public class RootController {
         if (binding.hasErrors()) {
             return "_/signup";
         } else {
-            AccountEntity account = this.accountService.create(signUpReq.getEmail(), signUpReq.getNickname(), signUpReq.getPassword());
+            CreateAccountParams params = new CreateAccountParams(signUpReq.getEmail(), signUpReq.getNickname(), signUpReq.getPassword());
+            AccountEntity account = this.accountService.create(params);
             return "redirect:/";
         }
     }
