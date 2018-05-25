@@ -22,7 +22,7 @@ public class AccountEntity {
      * 계정 ID.
      *
      * @Id : `Account` 엔티티의 ID가 되는 속성. primary key 컬럼.
-     * @GeneratedValue : Java 로직이 아닌 MySQL의 AUTO_INCREMENT로 값이 정해지는 속성.
+     * @GeneratedValue : Java 로직이 아닌 MySQL의 {@code AUTO_INCREMENT}로 값이 정해지는 속성.
      * @Column : 없어도 되지만, 필드와 DB 컬럼값의 동기화 규치를 명시적으로 표시.
      * <p>
      * 필드 이름과 컬럼 이름은 다를 수 있다.
@@ -67,13 +67,6 @@ public class AccountEntity {
      */
     @Column(name = "passwd", nullable = false, length = 60)
     private String password;
-    /**
-     * 계정 데이터 생성 시각.
-     */
-    @Column(name = "create_utc", nullable = false, updatable = false)
-    private long create;
-    @Column(name = "create_reverse", nullable = false, updatable = false)
-    private long createReverse;
 
     /**
      * JPA 엔티티는 인자 없는 생성자 메서드가 필수이다.
@@ -90,8 +83,6 @@ public class AccountEntity {
         setEmail(email);
         setNickname(nickname);
         setPassword(password);
-        this.create = System.currentTimeMillis();
-        this.createReverse = -this.create;
     }
 
     public int getId() {
@@ -170,7 +161,7 @@ public class AccountEntity {
      */
     @Override
     public String toString() {
-        return format("%s{id=%d, email='%s', nickname='%s', password=[ PROTECTED ], create=%d}",
-                getClass().getSimpleName(), this.id, this.email, this.nickname, this.create);
+        return format("%s{id=%d, email='%s', nickname='%s', password=[ PROTECTED ]}",
+                getClass().getSimpleName(), this.id, this.email, this.nickname);
     }
 }
