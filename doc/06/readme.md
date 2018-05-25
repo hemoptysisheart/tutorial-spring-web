@@ -285,3 +285,56 @@ list.addAll(accountRepository.findAllByCreateOrderByCreateAsc(utcMillis));
 ### 참고
 
 * [Spring Data JPA - Reference Documentation : 3.3.2. Query Creation](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods.query-creation)
+
+## STEP 4 - 비지니스 로직과 JPA 레포지토리 분리하기
+
+개인적으로 레포지토리 이전에 DB와 연동하는 로직을 가지고 있던 DAO(Data Access Object)의 이름을 가져와 DAO 레이어라고 부르는 레이어를 추가한다.
+
+### DAO 컴포넌트 추가
+
+레포지토리는 DAO 레이어에서만 사용한다.
+
+```java
+package hemoptysisheart.github.com.tutorial.spring.web;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class AccountDao {
+    @Autowired
+    private AccountRepository accountRepository;
+
+    public AccountEntity insert(AccountEntity account) {
+        return this.accountRepository.save(account);
+    }
+}
+```
+[AccountDao.java](../../src/main/java/hemoptysisheart/github/com/tutorial/spring/web/AccountDao.java)
+
+### 서비스 컴포넌트 수정
+
+1. 서비스 컴포넌트에서 레포지토리 필드를 삭제하고 DAO 필드를 추가한다.
+1. 레포지토리의 메서드를 사용하던 코드를 DAO 컴포넌트를 사용하도록 변경.
+
+```java
+package hemoptysisheart.github.com.tutorial.spring.web;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+@Transactional
+public class AccountService {
+    @Autowired
+    private AccountDao accountDao;
+
+    public AccountEntity create(CreateAccountParams params) {
+        AccountEntity account = new AccountEntity(params.getEmail(), params.getNickname(), params.getPassword());
+        account = this.accountDao.insert(account);
+        return account;
+    }
+}
+```
+[AccountService.java](../../src/main/java/hemoptysisheart/github/com/tutorial/spring/web/AccountService.java)

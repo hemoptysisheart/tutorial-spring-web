@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class AccountService {
     @Autowired
-    private AccountRepository accountRepository;
+    private AccountDao accountDao;
 
     /**
      * 유저가 입력한 값을 사용해 계정 엔티티 인스턴스를 만들어 저장한다.
@@ -24,7 +24,7 @@ public class AccountService {
      */
     public AccountEntity create(CreateAccountParams params) {
         AccountEntity account = new AccountEntity(params.getEmail(), params.getNickname(), params.getPassword());
-        account = this.accountRepository.save(account);
+        account = this.accountDao.insert(account);
         return account;
     }
 }
