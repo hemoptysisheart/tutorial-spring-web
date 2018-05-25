@@ -3,6 +3,8 @@ package hemoptysisheart.github.com.tutorial.spring.web;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * Spring Data JPA가 메서드 이름을 기반으로 SQL로 변환해주는 레포지토리 인터페이스.
  * 구현하지 않더라도 프록시를 사용해 인스턴스를 생성한다.
@@ -30,4 +32,18 @@ public interface AccountRepository extends JpaRepository<AccountEntity, Integer>
      * @return 계정 인스턴스 혹은 {@code null}.
      */
     AccountEntity findOneByNickname(String nickname);
+
+    /**
+     * @param utcMillis
+     * @return
+     * @see <a href="https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods.query-creation">3.3.2. Query Creation</a>
+     */
+    List<AccountEntity> findAllByCreateOrderByCreateAsc(long utcMillis);
+
+    /**
+     * @param negativeUtcMillis
+     * @return
+     * @see <a href="https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods.query-creation">3.3.2. Query Creation</a>
+     */
+    List<AccountEntity> findAllByCreateReverseOrderByCreateReverseAsc(long negativeUtcMillis);
 }

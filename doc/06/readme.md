@@ -172,3 +172,116 @@ public String signUp(@ModelAttribute("signUpReq") @Valid final SignUpReq signUpR
             └── signup.html
 ```
 [전체 구조](step_2_tree.text)
+
+## STEP 3 - 비지니스 로직과 JPA 분리가 필요한 이유
+
+애플리케이션에서 비지니스 로직(보통 `@Service` 컴포넌트의 로직)은 구현해야 하는 기능과 오류 대응과 모니터링 로그 등등의 많은 기능 때문에 어쩔 수 없이 **복잡하다**.
+
+JPA 레포지토리는 메서드 이름으로 SQL을 매핑하기 때문에 비지니스 로직의 코드와 다른 형식을 가진다.
+그래서 비지니스 로직에서 JPA 레포지토리 메서드에 접근한다면 코드 스타일이 뒤섞여 더욱 복잡해진다.
+
+DB의 문제도 있다. 예를 들면 MySQL은 `5.7`까지 내림차순 인덱스를 지원하지 않는다(`8.0`부터는 지원한다고 한다).
+그래서 최신 데이터를 먼저 가져오는 쿼리가 인덱스를 쓰도록 하려면,
+오름차순으로 정렬해도 최신 데이터가 먼저 나오도록 시각 정보를 변환한 컬럼을 추가하고 인덱스를 걸어줘야 한다.
+
+그런데 만약 특정 시각을 기준으로 앞뒤로 몇 건의 데이터를 시간순으로 정렬해서 선택해야 한다면?
+
+특정 시각 이후를 오래된 순서로 오름차순으로 데이터를 선택하고,
+특정 시각 이전을 새로운 순서로 오름차순으로 데이터를 선택해서 합쳐야 한다.
+
+오래됀 순서로 선택할 수 있는 쿼리(레포지토리 메서드)와 새로운 순서로 선택할 수 있는 쿼리 두가지를 가지고,
+각각의 쿼리가 사용할 인덱스를 가진 각각의 컬럼이 필요하다.
+
+즉, 다음과 같은 테이블과 쿼리, 메서드 정의, 호출 코드를 사용해야 한다.
+
+DDL :
+```sql
+CREATE TABLE IF NOT EXISTS `user_account` (
+  -- ... 생략 ...
+  `create_utc` BIGINT NOT NULL COMMENT 'UTC milliseconds. create_utc = - create_reverse',
+  `create_reverse` BIGINT NOT NULL COMMENT 'UTC milliseconds. create_reverse = - create_utc',
+  -- ... 생략 ...
+  INDEX `IDX_ACCOUNT_CREATE_ASC` (`create_utc` ASC),
+  INDEX `IDX_ACCOUNT_CREATE_DESC` (`create_reverse` ASC))
+ENGINE = InnoDB;
+```
+[tutorial_spring_web.sql](../../db/tutorial_spring_web.sql)
+
+JPA 엔티티 :
+```java
+package hemoptysisheart.github.com.tutorial.spring.web;
+
+// ... 생략 ...
+
+public class AccountEntity {
+    // ... 생략 ...
+
+    @Column(name = "create_utc", nullable = false, updatable = false)
+    private long create;
+    @Column(name = "create_reverse", nullable = false, updatable = false)
+    private long createReverse;
+
+    // ... 생략 ...
+
+    public AccountEntity(String email, String nickname, String password) {
+        // ... 생략 ...
+        this.create = System.currentTimeMillis();
+        this.createReverse = -this.create;
+    }
+
+    // ... 생략 ...
+}
+```
+[AccountEntity.java](../../src/main/java/hemoptysisheart/github/com/tutorial/spring/web/AccountEntity.java)
+
+DML :
+```sql
+SELECT
+    *
+FROM
+    user_account
+ORDER BY
+    create_utc ASC
+```
+```sql
+SELECT
+    *
+FROM
+    user_account
+ORDER BY
+    create_reverse ASC
+```
+
+레포지토리 :
+```java
+package hemoptysisheart.github.com.tutorial.spring.web;
+
+// ... 생략 ...
+
+public interface AccountRepository extends JpaRepository<AccountEntity, Integer> {
+    // ... 생략 ...
+
+    List<AccountEntity> findAllByCreateOrderByCreateAsc(long utcMillis);
+
+    List<AccountEntity> findAllByCreateReverseOrderByCreateReverseAsc(long negativeUtcMillis);
+}
+```
+[AccountRepository.java](../../src/main/java/hemoptysisheart/github/com/tutorial/spring/web/AccountRepository.java)
+
+호출 코드 :
+```java
+long utcMillis = System.currentTimeMillis();
+List<AccountEntity> list = new ArrayList();
+list.addAll(accountRepository.findAllByCreateReverseOrderByCreateReverseAsc(-utcMillis));
+list.addAll(accountRepository.findAllByCreateOrderByCreateAsc(utcMillis));
+```
+
+특히 레포지토리의 메서드를 사용하는 측에선 레포지토리 메서드 이름 규칙 때문에 코드 컨벤션을 포기해야 하며,
+논리적인 코드가 아니라 레포지토리의 작동방식에 맞춘 코드를 작성해야 한다.
+
+이는 기능상의 문제는 없지만 개발자에게 행단위로 사고방식을 바꾸길 강요해 생산성을 떨어뜨리는 요소로 작용한다.
+~~코드 읽기 짜증난다.~~
+
+### 참고
+
+* [Spring Data JPA - Reference Documentation : 3.3.2. Query Creation](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods.query-creation)

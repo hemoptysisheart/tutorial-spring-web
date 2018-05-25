@@ -67,6 +67,13 @@ public class AccountEntity {
      */
     @Column(name = "passwd", nullable = false, length = 60)
     private String password;
+    /**
+     * 계정 데이터 생성 시각.
+     */
+    @Column(name = "create_utc", nullable = false, updatable = false)
+    private long create;
+    @Column(name = "create_reverse", nullable = false, updatable = false)
+    private long createReverse;
 
     /**
      * JPA 엔티티는 인자 없는 생성자 메서드가 필수이다.
@@ -83,6 +90,8 @@ public class AccountEntity {
         setEmail(email);
         setNickname(nickname);
         setPassword(password);
+        this.create = System.currentTimeMillis();
+        this.createReverse = -this.create;
     }
 
     public int getId() {
@@ -161,7 +170,7 @@ public class AccountEntity {
      */
     @Override
     public String toString() {
-        return format("%s{id=%d, email='%s', nickname='%s', password=[ PROTECTED ]}",
-                getClass().getSimpleName(), this.id, this.email, this.nickname);
+        return format("%s{id=%d, email='%s', nickname='%s', password=[ PROTECTED ], create=%d}",
+                getClass().getSimpleName(), this.id, this.email, this.nickname, this.create);
     }
 }
