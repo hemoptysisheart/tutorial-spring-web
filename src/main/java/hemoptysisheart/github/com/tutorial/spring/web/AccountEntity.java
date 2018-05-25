@@ -22,7 +22,7 @@ public class AccountEntity {
      * 계정 ID.
      *
      * @Id : `Account` 엔티티의 ID가 되는 속성. primary key 컬럼.
-     * @GeneratedValue : Java 로직이 아닌 MySQL의 AUTO_INCREMENT로 값이 정해지는 속성.
+     * @GeneratedValue : Java 로직이 아닌 MySQL의 {@code AUTO_INCREMENT}로 값이 정해지는 속성.
      * @Column : 없어도 되지만, 필드와 DB 컬럼값의 동기화 규치를 명시적으로 표시.
      * <p>
      * 필드 이름과 컬럼 이름은 다를 수 있다.

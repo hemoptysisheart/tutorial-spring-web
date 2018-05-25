@@ -1,5 +1,6 @@
 package hemoptysisheart.github.com.tutorial.spring.web;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,6 +21,9 @@ import java.time.ZonedDateTime;
  */
 @Controller
 public class RootController {
+    @Autowired
+    private AccountService accountService;
+
     /**
      * 브라우저에 {@code /} 도메인만 입력했을 경우의 리퀘스트를 처리하는 컨트롤러 메서드.
      *
@@ -64,6 +68,8 @@ public class RootController {
         if (binding.hasErrors()) {
             return "_/signup";
         } else {
+            CreateAccountParams params = new CreateAccountParams(signUpReq.getEmail(), signUpReq.getNickname(), signUpReq.getPassword());
+            AccountEntity account = this.accountService.create(params);
             return "redirect:/";
         }
     }
