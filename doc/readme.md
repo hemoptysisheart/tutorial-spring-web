@@ -6,3 +6,4 @@
 1. [CH.04 - 계정을 만들자](04/readme.md)
 1. [CH.05 - JPA 설정](05/readme.md)
 1. [CH.06 - 서비스 레이어](06/readme.md)
+1. [CH.07 - 트랜잭션 관리 개선하기](07/readme.md)
