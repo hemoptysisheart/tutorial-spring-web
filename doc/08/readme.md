@@ -332,3 +332,37 @@ public class EntityConfiguration {
             └── signup.html
 ```
 [전체 구조](step_3_tree.txt)
+
+## STEP 4 - 실행환경용 설정을 패키지 밖으로 빼내기
+
+실행환경용 설정은 `application.yml` 파일에 작성한다.
+그런데 애플리케이션을 패키징할 경우, `*.jar`파일은 `application.yml` 파일까지 포함하게 된다.
+
+이 경우 첫째, 잦은 패키징이 필요한 문제가 있다.
+지금 설정에서는 실행환경이 변할 경우 새로 패키징을 해야 한다.
+예를 들어 DB가 로컬호스트에서 별도의 서버에서 실행하는 경우에 새로 패키징을 해야 하는 문제가 있다.
+
+둘째, 보안 문제가 있다.
+빌드할 때 `application.yml` 파일도 포함해야 한다.
+대표적으로 DB 접속 비밀번호 관리 문제가 있다.
+
+이런 문제는 실행환경용 설정을 `*.jar` 파일 외부에서 제공하는 방법으로 간단하게 해결할 수 있다.
+
+잦은 패키징 문제는 단순 재실행으로 대신할 수 있고,
+보안 문제는 각 환경 담당자만 접근 권한을 가지는 것으로 해결할 수 있다.
+
+방법은 간단해서, 워킹 디렉토리를 기준으로 `[WORKING DIRECTORY]/config/application.yml`로 설정 파일을 옮기면 된다.
+
+```
+.
+├── config
+│   └── application.yml
+└── src/main
+    ├── ... 생략 ...
+    └── resources
+        └── templates
+            └── _
+                ├── index.html
+                ├── newbie.html
+                └── signup.html
+```
