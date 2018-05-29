@@ -49,3 +49,222 @@
 : JPA Entity와 JpaRepository는 JPA에 종속적인 타입이기 때문에 `jpa.entity`와 `jpa.repository` 패키지로 분리한다.
 * `hemoptysisheart.github.com.tutorial.spring.web.runner`
 : 패키지 중복을 피하기 위해 클래스가 하나뿐이지만 별도의 패키지로 분리.
+
+## STEP 2 - 설정 갱신
+
+패키지 변경으로 인해 기존 설정으로는 컴포넌트 설정을 활용할 수 없어서 애플리케이션을 실행할 수 없게 됐다.
+개발도구의 지원을 최대한 이끌어내기 위해 JavaConfig 설정을 추가한다.
+
+1. 웹MVC 설정을 위해 `@EnableWebMvc` 어노테이션은 `WebMvcConfiguration`으로 분리한다.
+1. `hemoptysisheart.github.com.tutorial.spring.web.configuration`의 설정을 설정을 사용할 수 있도록 `scanBasePackageClasses` 설정을 추가한다.
+
+애플리케이션의 메인 설정이 설정 패키지를 검색하도록 해서 메인 설정을 단순하게 만든다.
+
+> 메인 설정은 JavaConfig와 `application.yml`의 2종류가 있다.
+> JavaConfig는 컴파일타임에 결정하는 로직에 대한 설정이고,
+> `application.yml`은 런타임에 결정하는 실행 환경에 대한 설정이다.
+
+```java
+package hemoptysisheart.github.com.tutorial.spring.web.runner;
+
+// ... 생략 ...
+
+@SpringBootApplication(scanBasePackageClasses = {ApplicationConfiguration.class})
+public class ApplicationRunner {
+    // ... 생략 ...
+}
+```
+[ApplicationRunner.java](../../src/main/java/hemoptysisheart/github/com/tutorial/spring/web/runner/ApplicationRunner.java)
+
+`ApplicationRunner`에서 웹MVC 설정 책임을 넘겨받은 `WebMvcConfiguration`이 넘겨받는다.
+
+1. `@EnableWebMvc`설정을 제공한다.
+1. 웹 페이지를 서비스할 컨트롤러를 설정할 수 있도록 `@ComponentScan(basePackageClasses = {ControllerConfiguration.class})` 설정을 제공한다.
+
+```java
+package hemoptysisheart.github.com.tutorial.spring.web.configuration;
+
+// ... 생략 ...
+
+@Configuration
+@EnableWebMvc
+@ComponentScan(basePackageClasses = {ControllerConfiguration.class})
+public class WebMvcConfiguration {
+}
+```
+[WebMvcConfiguration.java](../../src/main/java/hemoptysisheart/github/com/tutorial/spring/web/configuration/WebMvcConfiguration.java)
+
+DB 연동용 JPA 설정에 바뀐 패키지 정보를 제공한다.
+
+1. 레포지토리 컨포넌트를 설정하도록 패키지 정보를 추가한다. `@EnableJpaRepositories(basePackageClasses = {RepositoryConfiguration.class})`
+1. JPA 엔티티를 관리할수 있도록 엔티티 매니저에 패키지 정보를 추가한다. `factory.setPackagesToScan(EntityConfiguration.PACKAGE_NAME)`
+
+```java
+package hemoptysisheart.github.com.tutorial.spring.web.configuration;
+
+// ... 생략 ...
+
+@Configuration
+@EnableJpaRepositories(basePackageClasses = {RepositoryConfiguration.class})
+@EnableTransactionManagement
+public class JpaConfiguration {
+    // ... 생략 ...
+
+    @Bean
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+        // ... 생략 ...
+
+        factory.setPackagesToScan(EntityConfiguration.PACKAGE_NAME);
+
+        // ... 생략 ...
+        return factory;
+    }
+}
+```
+[JpaConfiguration.java](../../src/main/java/hemoptysisheart/github/com/tutorial/spring/web/configuration/JpaConfiguration.java)
+
+웹MVC 설정에서 뷰와 모델에 대한 설정은 컨트롤러가 코드를 통해 제공한다.
+즉, 컨트롤러만 설정하면 된다.
+
+1. `ControllerConfiguration` 클래스에 `@Configuration` 어노테이션으로 컴포넌트 스캔이 작동할 수 있도록 한다.
+1. `@ComponentScan(basePackageClasses = {BorderlineConfiguration.class})`으로 모델 인스턴스를 가져올 때 필요한 보더라인 컴포넌트에 필요한 설정을 제공한다.
+
+```java
+package hemoptysisheart.github.com.tutorial.spring.web.controller;
+
+// ... 생략 ...
+
+@Configuration
+@ComponentScan(basePackageClasses = {BorderlineConfiguration.class})
+public class ControllerConfiguration {
+    // ... 생략 ...
+}
+```
+[ControllerConfiguration.java](../../src/main/java/hemoptysisheart/github/com/tutorial/spring/web/controller/ControllerConfiguration.java)
+
+1. `@Configuration` : `BorderlineConfiguration` 클래스를 스프링 프레임워크가 설정 정보로 인식하도록 한다.
+1. `@ComponentScan(basePackageClasses = {ServiceConfiguration.class})` : 내부 로직인 보더라인 레이어에 필요한 서비스 레이어 설정 정보를 제공한다.
+
+```java
+package hemoptysisheart.github.com.tutorial.spring.web.borderline;
+
+// ... 생략 ...
+
+@Configuration
+@ComponentScan(basePackageClasses = {ServiceConfiguration.class})
+public class BorderlineConfiguration {
+    // ... 생략 ...
+}
+```
+[BorderlineConfiguration.java](../../src/main/java/hemoptysisheart/github/com/tutorial/spring/web/borderline/BorderlineConfiguration.java)
+
+`BorderlineConfiguration`와 동일. 필요한 레이어의 설정 정보를 스프링 프레임워크에 제공한다.
+
+```java
+package hemoptysisheart.github.com.tutorial.spring.web.service;
+
+// ... 생략 ...
+
+@Configuration
+@ComponentScan(basePackageClasses = {DaoConfiguration.class})
+public class ServiceConfiguration {
+    // ... 생략 ...
+}
+```
+[ServiceConfiguration.java](../../src/main/java/hemoptysisheart/github/com/tutorial/spring/web/service/ServiceConfiguration.java)
+
+```java
+package hemoptysisheart.github.com.tutorial.spring.web.dao;
+
+// ... 생략 ...
+
+@Configuration
+@ComponentScan(basePackageClasses = {RepositoryConfiguration.class})
+public class DaoConfiguration {
+    // ... 생략 ...
+}
+```
+[DaoConfiguration.java](../../src/main/java/hemoptysisheart/github/com/tutorial/spring/web/dao/DaoConfiguration.java)
+
+레포지토리 컴포넌트는 JPA 엔티티에 의존성을 가지고 있지만, 컴포넌트 스캔으로 엔티티 매니저에 JPA 엔티티 패키지 정보를 제공할 수 없다.
+그래서 `@Configuration`과 `@ComponentScan`으로 스프링 프레임워크에 설정 정보를 제공하지 못한다.
+
+`RepositoryConfiguration`는 `JpaConfiguration`의 `@EnableJpaRepositories(basePackageClasses = {RepositoryConfiguration.class})` 설정에 사용한다.
+
+```java
+package hemoptysisheart.github.com.tutorial.spring.web.jpa.repository;
+
+// ... 생략 ...
+
+public class RepositoryConfiguration {
+    // ... 생략 ...
+}
+```
+[RepositoryConfiguration.java](../../src/main/java/hemoptysisheart/github/com/tutorial/spring/web/jpa/repository/RepositoryConfiguration.java)
+
+`EntityConfiguration`도 스프링 프레임워크의 컴포넌트 스캔이 아닌 `JpaConfiguration`에 직접 정보를 제공하는 설정 클래스이다.
+`JpaConfiguration.entityManagerFactory()` 메서드에서
+`LocalContainerEntityManagerFactoryBean.setPackagesToScan(String...)` 메서드의 인자로 사용할
+`EntityConfiguration.PACKAGE_NAME` 문자열을 제공하는 용도이다.
+
+```java
+package hemoptysisheart.github.com.tutorial.spring.web.jpa.entity;
+
+// ... 생략 ...
+
+public class EntityConfiguration {
+    public static final Package PACKAGE = EntityConfiguration.class.getPackage();
+    public static final String PACKAGE_NAME = PACKAGE.getName();
+}
+```
+[EntityConfiguration.java](../../src/main/java/hemoptysisheart/github/com/tutorial/spring/web/jpa/entity/EntityConfiguration.java)
+
+### 프로젝트 구조
+
+```
+./src/main
+├── java
+│   └── hemoptysisheart
+│       └── github
+│           └── com
+│               └── tutorial
+│                   └── spring
+│                       └── web
+│                           ├── borderline
+│                           │   ├── AccountBorderline.java
+│                           │   ├── AccountPo.java
+│                           │   ├── BorderlineConfiguration.java
+│                           │   └── CreateAccountCmd.java
+│                           ├── configuration
+│                           │   ├── ApplicationConfiguration.java
+│                           │   ├── JpaConfiguration.java
+│                           │   └── WebMvcConfiguration.java
+│                           ├── controller
+│                           │   ├── ControllerConfiguration.java
+│                           │   ├── RootController.java
+│                           │   └── SignUpReq.java
+│                           ├── dao
+│                           │   ├── AccountDao.java
+│                           │   └── DaoConfiguration.java
+│                           ├── jpa
+│                           │   ├── entity
+│                           │   │   ├── AccountEntity.java
+│                           │   │   └── EntityConfiguration.java
+│                           │   └── repository
+│                           │       ├── AccountRepository.java
+│                           │       └── RepositoryConfiguration.java
+│                           ├── runner
+│                           │   └── ApplicationRunner.java
+│                           └── service
+│                               ├── AccountService.java
+│                               ├── CreateAccountParams.java
+│                               └── ServiceConfiguration.java
+└── resources
+    ├── application.yml
+    └── templates
+        └── _
+            ├── index.html
+            ├── newbie.html
+            └── signup.html
+```
+[전체 구조](step_2_tree.txt)
