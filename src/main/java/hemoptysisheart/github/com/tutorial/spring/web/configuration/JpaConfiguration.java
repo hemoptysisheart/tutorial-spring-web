@@ -1,4 +1,4 @@
-package hemoptysisheart.github.com.tutorial.spring.web;
+package hemoptysisheart.github.com.tutorial.spring.web.configuration;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;

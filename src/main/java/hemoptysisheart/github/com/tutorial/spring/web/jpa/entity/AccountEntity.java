@@ -1,4 +1,4 @@
-package hemoptysisheart.github.com.tutorial.spring.web;
+package hemoptysisheart.github.com.tutorial.spring.web.jpa.entity;
 
 import javax.persistence.*;
 
