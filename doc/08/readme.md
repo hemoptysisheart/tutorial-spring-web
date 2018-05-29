@@ -268,3 +268,67 @@ public class EntityConfiguration {
             └── signup.html
 ```
 [전체 구조](step_2_tree.txt)
+
+## STEP 3 - (선택)비지니스 로직 오브젝트와 DTO 분리
+
+(상대적으로) 복잡한 비지니스 로직을 가진 컴포넌트 클래스와 컴포넌트 레이어 사이를 오가는 (상대적으로) 단순한 DTO 클래스를
+서로 다른 패키지로 분리해서 각 패키지와 클래스의 목적과 내용, 책임을 명확히 한다.
+
+* `hemoptysisheart.github.com.tutorial.spring.web.controller.req` : Request. HTTP 리퀘스트를 바인딩할 클래스용 패키지. 밸리데이션과 재입력 필드 등 웹UI 의존적인 코드를 가진다.
+* `hemoptysisheart.github.com.tutorial.spring.web.borderline.cmd` : Command. 내부 로직을 실행할 때 필요한 정보. 웹MVC 레이어의 정보에서 웹 의존적인 코드가 빠지고 필요한 경우 현재 유저의 ID 등을 추가한다.
+* `hemoptysisheart.github.com.tutorial.spring.web.service.params` : Parameters. 실재 데이터 관리 단위이자 최소 로직 단위인 JPA 엔티티를 정보를 필드로 가진다.
+* `hemoptysisheart.github.com.tutorial.spring.web.borderline.po` : Plain Object. JPA 엔티티에서 JPA 요소를 제거해 템플릿 등의 외부 로직에서 데이터 변경 등 권한 외 조작을 못하도록 막는다.
+
+### 프로젝트 구조
+
+```
+./src/main
+├── java
+│   └── hemoptysisheart
+│       └── github
+│           └── com
+│               └── tutorial
+│                   └── spring
+│                       └── web
+│                           ├── borderline
+│                           │   ├── AccountBorderline.java
+│                           │   ├── BorderlineConfiguration.java
+│                           │   ├── cmd
+│                           │   │   └── CreateAccountCmd.java
+│                           │   └── po
+│                           │       └── AccountPo.java
+│                           ├── configuration
+│                           │   ├── ApplicationConfiguration.java
+│                           │   ├── JpaConfiguration.java
+│                           │   └── WebMvcConfiguration.java
+│                           ├── controller
+│                           │   ├── ControllerConfiguration.java
+│                           │   ├── RootController.java
+│                           │   └── req
+│                           │       └── SignUpReq.java
+│                           ├── dao
+│                           │   ├── AccountDao.java
+│                           │   └── DaoConfiguration.java
+│                           ├── jpa
+│                           │   ├── entity
+│                           │   │   ├── AccountEntity.java
+│                           │   │   └── EntityConfiguration.java
+│                           │   └── repository
+│                           │       ├── AccountRepository.java
+│                           │       └── RepositoryConfiguration.java
+│                           ├── runner
+│                           │   └── ApplicationRunner.java
+│                           └── service
+│                               ├── AccountService.java
+│                               ├── ServiceConfiguration.java
+│                               └── params
+│                                   └── CreateAccountParams.java
+└── resources
+    ├── application.yml
+    └── templates
+        └── _
+            ├── index.html
+            ├── newbie.html
+            └── signup.html
+```
+[전체 구조](step_3_tree.txt)
