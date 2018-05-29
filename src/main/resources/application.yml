@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    hikari:
+      driver-class-name: com.mysql.jdbc.Driver
+      idle-timeout: 12000
+      connection-test-query: SELECT 1
+  jpa:
+    database: mysql
+    open-in-view: false
+  thymeleaf:
+    cache: true

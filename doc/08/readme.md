@@ -366,3 +366,55 @@ public class EntityConfiguration {
                 ├── newbie.html
                 └── signup.html
 ```
+
+그런데 `spring.jpa.open-in-view` 같은 실행환경에 의존성이 없는 설정은 공통으로 사용하고,
+환경에 의존적인 설정만 추가하거나 덮어써서 하는 것이 문제가 생길 위험이 낮아진다.
+
+* `spring.datasource.hikari.*` : 공통 설정은 `src/main/resources/application.yml`에서, 환경별 설정은 `config/application.yml`에서 가져와서 전체 설정을 가져온다.
+* `spring.jpa.*` : 공통 설정인 `src/main/resources/application.yml`에서 가져온다.
+* `spring.thymeleaf.cache` : `src/main/resources/application.yml`의 설정을 `config/application.yml`에서 덮어쓴다.
+
+```yaml
+spring:
+  datasource:
+    hikari:
+      jdbc-url: jdbc:mysql://localhost/tutorial_spring_web?connectionCollation=utf8mb4_bin
+      username: root
+      password: ''
+  thymeleaf:
+    cache: false
+```
+[`config/application.yml`](../../config/application.yml)
+
+```yaml
+spring:
+  datasource:
+    hikari:
+      driver-class-name: com.mysql.jdbc.Driver
+      idle-timeout: 12000
+      connection-test-query: SELECT 1
+  jpa:
+    database: mysql
+    open-in-view: false
+  thymeleaf:
+    cache: true
+```
+[`src/main/resources/application.yml`](../../src/main/resources/application.yml)
+
+### 프로젝트 구조
+
+```
+.
+├── config
+│   └── application.yml
+└── src/main
+    ├── ... 생략 ...
+    └── resources
+        ├── application.yml
+        └── templates
+            └── _
+                ├── index.html
+                ├── newbie.html
+                └── signup.html
+```
+[전체 구조](step_4_rev_2_tree.txt)
