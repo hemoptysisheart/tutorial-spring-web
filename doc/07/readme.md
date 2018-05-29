@@ -154,3 +154,29 @@ public class AccountPo {
             └── signup.html
 ```
 [전체 구조](step_1_tree.txt)
+
+## STEP 2 - 오버해드 줄이기(실험적)
+
+`@Transactional`을 사용한 컴포넌트는 프록시를 사용해 런타임에 트랜잭션 관리 기능을 추가한다. 다음의 콜 스택을 보면,
+
+![`AccountRepository.save(AccountEntity)`까지의 콜 스택](step_2_after_step_1_callstack.png)
+
+`@Transactional`이 있는 컴포넌트에 대해선 `org.springframework.transaction.interceptor`를 사용해 트랜잭션 처리 기능을 추가하고 있다.
+그런데 모든 레이어에 트랜잭션 관리 기능을 넣어야 할까?
+
+각 레이어와 컴포넌트에 `@Transactional`을 적용한 이유는
+컴포넌트 단위로 단위테스트를 작성할 때 트랜잭션을 보장하기 위해서였다.
+
+`AccountBorderline`이 트랜잭션 관리를 시작하고 그 안에 있기 때문에,
+서비스나 DAO 레이어에서 트랜잭션을 관리할 필요가 없다.
+`AccountService`와 `AccountDao`에서 `@Transactional` 어노테이션을 제거해서
+오버해드를 제거한다.
+
+![트랜잭션 관리 오버해드를 줄인 콜스택](step_2_reduce_transaction_overhead.png)
+
+16단계의 콜스택이 사라졌고, 스크린샷에 찍힌 메서드 호출 앞뒤로 있을 다른 로직의 오버해드도 사라졌다.
+부수적인 효과로 각 레이어 사이(`AccountBorderline` -> `AccountService` 등)의 프록시가 사라지고 직접 호출하면서 디버깅도 편해졌다.
+
+이렇게 내부 레이어에서 `@Transactional`을 제거해 오버해드를 줄이는 방식은 _**사용해본 적이 없다**_.
+
+그리고, 트랜잭션 매니저가 1개인 애플리케이션에서만 사용할 수 있을 것으로 _**추정한다**_.

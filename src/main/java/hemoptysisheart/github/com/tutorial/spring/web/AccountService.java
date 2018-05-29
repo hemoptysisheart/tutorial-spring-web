@@ -2,7 +2,6 @@ package hemoptysisheart.github.com.tutorial.spring.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 계정 관리에 관련된 로직.
@@ -11,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
  * @since 2018. 5. 24.
  */
 @Service
-@Transactional
 public class AccountService {
     @Autowired
     private AccountDao accountDao;
