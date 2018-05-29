@@ -1,4 +1,4 @@
-# Ch.02 - 일단 Spring Boot Web Application으로 태세 변환
+# CH.02 - 일단 Spring Boot Web Application으로 태세 변환
 
 애플리케이션을 임베디드 서블릿 컨테이너를 사용하는 웹 애플리케이션으로 바꾼다.
 

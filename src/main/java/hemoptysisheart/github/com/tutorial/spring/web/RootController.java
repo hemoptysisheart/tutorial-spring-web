@@ -22,7 +22,7 @@ import java.time.ZonedDateTime;
 @Controller
 public class RootController {
     @Autowired
-    private AccountService accountService;
+    private AccountBorderline accountBorderline;
 
     /**
      * 브라우저에 {@code /} 도메인만 입력했을 경우의 리퀘스트를 처리하는 컨트롤러 메서드.
@@ -68,9 +68,10 @@ public class RootController {
         if (binding.hasErrors()) {
             return "_/signup";
         } else {
-            CreateAccountParams params = new CreateAccountParams(signUpReq.getEmail(), signUpReq.getNickname(), signUpReq.getPassword());
-            AccountEntity account = this.accountService.create(params);
-            return "redirect:/";
+            CreateAccountCmd cmd = new CreateAccountCmd(signUpReq.getEmail(), signUpReq.getNickname(), signUpReq.getPassword());
+            AccountPo account = this.accountBorderline.create(cmd);
+            model.addAttribute("account", account);
+            return "_/newbie";
         }
     }
 }

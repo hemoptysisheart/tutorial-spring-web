@@ -1,4 +1,4 @@
-# Ch.06 - 서비스 레이어
+# CH.06 - 서비스 레이어
 
 비지니스 로직을 가진 서비스 레이어의 컴포넌트를 추가한다.
 
@@ -13,8 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
 @Transactional
+@Service
 public class AccountService {
     @Autowired
     private AccountRepository accountRepository;
@@ -299,7 +299,9 @@ package hemoptysisheart.github.com.tutorial.spring.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 @Service
 public class AccountDao {
     @Autowired
@@ -324,8 +326,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
 @Transactional
+@Service
 public class AccountService {
     @Autowired
     private AccountDao accountDao;
