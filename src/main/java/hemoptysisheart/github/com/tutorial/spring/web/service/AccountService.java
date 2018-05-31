@@ -1,6 +1,6 @@
 package hemoptysisheart.github.com.tutorial.spring.web.service;
 
-import hemoptysisheart.github.com.tutorial.spring.web.jpa.entity.AccountEntity;
+import hemoptysisheart.github.com.tutorial.spring.web.domain.Account;
 import hemoptysisheart.github.com.tutorial.spring.web.service.params.CreateAccountParams;
 
 /**
@@ -14,5 +14,5 @@ public interface AccountService {
      * @param params 새 계정 등록에 필요한 정보.
      * @return 새로 등록된 계정 엔티티.
      */
-    AccountEntity create(CreateAccountParams params);
+    Account create(CreateAccountParams params);
 }

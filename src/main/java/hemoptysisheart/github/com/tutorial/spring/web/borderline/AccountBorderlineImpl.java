@@ -2,7 +2,7 @@ package hemoptysisheart.github.com.tutorial.spring.web.borderline;
 
 import hemoptysisheart.github.com.tutorial.spring.web.borderline.cmd.CreateAccountCmd;
 import hemoptysisheart.github.com.tutorial.spring.web.borderline.po.AccountPo;
-import hemoptysisheart.github.com.tutorial.spring.web.jpa.entity.AccountEntity;
+import hemoptysisheart.github.com.tutorial.spring.web.domain.Account;
 import hemoptysisheart.github.com.tutorial.spring.web.service.AccountService;
 import hemoptysisheart.github.com.tutorial.spring.web.service.params.CreateAccountParams;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ class AccountBorderlineImpl implements AccountBorderline {
                 cmd.getEmail(),
                 cmd.getNickname(),
                 cmd.getPassword());
-        AccountEntity account = this.accountService.create(params);
+        Account account = this.accountService.create(params);
         AccountPo po = new AccountPo(
                 account.getId(),
                 account.getEmail(),

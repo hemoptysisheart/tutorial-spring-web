@@ -1,6 +1,7 @@
 package hemoptysisheart.github.com.tutorial.spring.web.service;
 
 import hemoptysisheart.github.com.tutorial.spring.web.dao.AccountDao;
+import hemoptysisheart.github.com.tutorial.spring.web.domain.Account;
 import hemoptysisheart.github.com.tutorial.spring.web.jpa.entity.AccountEntity;
 import hemoptysisheart.github.com.tutorial.spring.web.service.params.CreateAccountParams;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +23,8 @@ class AccountServiceImpl implements AccountService {
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
-    public AccountEntity create(CreateAccountParams params) {
-        AccountEntity account = new AccountEntity(params.getEmail(), params.getNickname(), params.getPassword());
+    public Account create(CreateAccountParams params) {
+        Account account = new AccountEntity(params.getEmail(), params.getNickname(), params.getPassword());
         account = this.accountDao.insert(account);
         return account;
     }

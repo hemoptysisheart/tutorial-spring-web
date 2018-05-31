@@ -1,5 +1,7 @@
 package hemoptysisheart.github.com.tutorial.spring.web.jpa.entity;
 
+import hemoptysisheart.github.com.tutorial.spring.web.domain.Account;
+
 import javax.persistence.*;
 
 import static java.lang.String.format;
@@ -17,7 +19,7 @@ import static java.lang.String.format;
 @Table(name = "user_account",
         uniqueConstraints = {@UniqueConstraint(name = "UQ_ACCOUNT_EMAIL", columnNames = {"email"}),
                 @UniqueConstraint(name = "UQ_ACCOUNT_NICKNAME", columnNames = {"nickname"})})
-public class AccountEntity {
+public class AccountEntity implements Account {
     /**
      * 계정 ID.
      *
@@ -85,14 +87,21 @@ public class AccountEntity {
         setPassword(password);
     }
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // hemoptysisheart.github.com.tutorial.spring.web.domain.Account
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    @Override
     public int getId() {
         return this.id;
     }
 
+    @Override
     public String getEmail() {
         return this.email;
     }
 
+    @Override
     public void setEmail(String email) {
         if (null == email || email.isEmpty()) {
             throw new IllegalArgumentException(format("email is null or empty : %s", email));
@@ -100,10 +109,12 @@ public class AccountEntity {
         this.email = email;
     }
 
+    @Override
     public String getNickname() {
         return this.nickname;
     }
 
+    @Override
     public void setNickname(String nickname) {
         if (null == nickname || nickname.isEmpty()) {
             throw new IllegalArgumentException(format("nickname is null or empty : %s", nickname));
@@ -111,16 +122,22 @@ public class AccountEntity {
         this.nickname = nickname;
     }
 
+    @Override
     public String getPassword() {
         return this.password;
     }
 
+    @Override
     public void setPassword(String password) {
         if (null == password || password.isEmpty()) {
             throw new IllegalArgumentException("password is null or empty.");
         }
         this.password = password;
     }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // java.lang.Object
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * JPA 구현체의 엔티티 매니저가 엔티티 인스턴스를 관리하기 위해선 오버라이드가 필요하다.

@@ -1,5 +1,6 @@
 package hemoptysisheart.github.com.tutorial.spring.web.dao;
 
+import hemoptysisheart.github.com.tutorial.spring.web.domain.Account;
 import hemoptysisheart.github.com.tutorial.spring.web.jpa.entity.AccountEntity;
 import hemoptysisheart.github.com.tutorial.spring.web.jpa.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ class AccountDaoImpl implements AccountDao {
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
-    public AccountEntity insert(AccountEntity account) {
-        return this.accountRepository.save(account);
+    public Account insert(Account account) {
+        return this.accountRepository.save((AccountEntity) account);
     }
 }

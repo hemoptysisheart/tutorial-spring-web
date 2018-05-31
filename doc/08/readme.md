@@ -588,3 +588,105 @@ class RootControllerImpl implements RootController {
             └── CreateAccountParams.java
 ```
 [전체 구조](step_6_tree.txt)
+
+## STEP 7 - 도메인 오브젝트의 인터페이스 정의하기
+
+상태를 가지지 않고 비지니스 로직의 분담, 연결을 담당하던 스프링 컴포넌트는 인터페이스를 사용해 구현방식을 숨겨 유지보수 비용을 낮췄다.
+
+이번엔 상태를 가지는 JPA 엔티티를 인터페이스를 사용해 도메인 오브젝트의 유지보수 비용을 낮춘다.
+
+도메인 오브젝트를 최고 수준으로 JPA로부터 독립시키려면,
+JPA 어노테이션 사용 없이 구현(`AccountImpl`같은 이름으로)하고
+JPA 엔티티(`AccountEntity`)에서는 JPA 엔티티를 통해 매핑 정보를 추가해야 하지만,
+어노테이션으로는 그런 설정을 할 수가 없다.
+
+JPA 의존성을 최소한으로 줄여서 구현한다 하더라도, 최소한 `@MappedSuperclass`는 필요하고 `@Id` 설정에 제약이 있다.
+도메인 오브젝트의 구현을 완전히 JPA 독립적으로 개발하기 위해선 XML을 사용해 설정해야 한다.
+
+도메인 오브젝트의 구현은 현실과 타협해 JPA 엔티티에서 담당한다.
+
+도메인 오브젝트의 정의는 JPA를 비롯해 외부에 독립적으로 정의한다.
+
+```java
+package hemoptysisheart.github.com.tutorial.spring.web.domain;
+
+public interface Account {
+    int getId();
+
+    String getEmail();
+    void setEmail(String email);
+
+    String getNickname();
+    void setNickname(String nickname);
+
+    String getPassword();
+    void setPassword(String password);
+}
+```
+[Account.java](../../src/main/java/hemoptysisheart/github/com/tutorial/spring/web/domain/Account.java)
+
+도메인 오브젝트의 구현은 어쩔 수 없이 JPA 의존적인 코드를 함께 작성한다(`public class AccountEntity implements Account`).
+스프링 컴포넌트 구현 클래스와는 달리 `public` 클래스인 점이 다른 부분이다.
+
+```java
+package hemoptysisheart.github.com.tutorial.spring.web.jpa.entity;
+
+// ... 생략 ...
+
+@Entity(name = "Account")
+@Table(name = "user_account",
+        uniqueConstraints = {@UniqueConstraint(name = "UQ_ACCOUNT_EMAIL", columnNames = {"email"}),
+                @UniqueConstraint(name = "UQ_ACCOUNT_NICKNAME", columnNames = {"nickname"})})
+public class AccountEntity implements Account {
+    // ... 생략 ...
+}
+```
+[AccountEntity.java](/src/main/java/hemoptysisheart/github/com/tutorial/spring/web/jpa/entity/AccountEntity.java)
+
+### 프로젝트 구조
+
+```
+./src/main/java
+└── hemoptysisheart.github.com.tutorial.spring.web
+    ├── borderline
+    │   ├── AccountBorderline.java
+    │   ├── AccountBorderlineImpl.java
+    │   ├── BorderlineConfiguration.java
+    │   ├── cmd
+    │   │   └── CreateAccountCmd.java
+    │   └── po
+    │       └── AccountPo.java
+    ├── configuration
+    │   ├── ApplicationConfiguration.java
+    │   ├── JpaConfiguration.java
+    │   └── WebMvcConfiguration.java
+    ├── controller
+    │   ├── ControllerConfiguration.java
+    │   ├── RootController.java
+    │   ├── RootControllerImpl.java
+    │   └── req
+    │       └── SignUpReq.java
+    ├── dao
+    │   ├── AccountDao.java
+    │   ├── AccountDaoImpl.java
+    │   └── DaoConfiguration.java
+    ├── domain
+    │   ├── Account.java
+    │   └── DomainConfiguration.java
+    ├── jpa
+    │   ├── entity
+    │   │   ├── AccountEntity.java
+    │   │   └── EntityConfiguration.java
+    │   └── repository
+    │       ├── AccountRepository.java
+    │       └── RepositoryConfiguration.java
+    ├── runner
+    │   └── ApplicationRunner.java
+    └── service
+        ├── AccountService.java
+        ├── AccountServiceImpl.java
+        ├── ServiceConfiguration.java
+        └── params
+            └── CreateAccountParams.java
+```
+[전체 구조](step_7_tree.txt)
