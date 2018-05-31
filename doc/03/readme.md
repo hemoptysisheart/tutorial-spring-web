@@ -30,19 +30,13 @@
 ```
 ./src/main
 ├── java
-│   └── hemoptysisheart
-│       └── github
-│           └── com
-│               └── tutorial
-│                   └── spring
-│                       └── web
-│                           └── ApplicationRunner.java
+│   └── hemoptysisheart.github.com.tutorial.spring.web
+│       └── ApplicationRunner.java
 └── resources
     └── templates
         └── _
             └── index.html
 ```
-
 [전체 구조](step_1_tree.txt)
 
 ## STEP 2 - HTML 출력
@@ -108,20 +102,14 @@ public class RootController {
 ```
 ./src/main
 ├── java
-│   └── hemoptysisheart
-│       └── github
-│           └── com
-│               └── tutorial
-│                   └── spring
-│                       └── web
-│                           ├── ApplicationRunner.java
-│                           └── RootController.java
+│   └── hemoptysisheart.github.com.tutorial.spring.web
+│       ├── ApplicationRunner.java
+│       └── RootController.java
 └── resources
     └── templates
         └── _
             └── index.html
 ```
-
 [전체 구조](step_2_tree.txt)
 
 ## STEP 3 - 로직의 데이터 출력하기
@@ -201,21 +189,15 @@ spring:
 ```
 ./src/main
 ├── java
-│   └── hemoptysisheart
-│       └── github
-│           └── com
-│               └── tutorial
-│                   └── spring
-│                       └── web
-│                           ├── ApplicationRunner.java
-│                           └── RootController.java
+│   └── hemoptysisheart.github.com.tutorial.spring.web
+│       ├── ApplicationRunner.java
+│       └── RootController.java
 └── resources
     ├── application.yml
     └── templates
         └── _
             └── index.html
 ```
-
 [전체 구조](step_4_tree.txt)
 
 ### 참고

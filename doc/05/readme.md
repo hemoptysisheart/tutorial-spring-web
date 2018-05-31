@@ -42,15 +42,10 @@ DDL을 실행해 스키마를 생성한다.
 └── src
     └── main
         ├── java
-        │   └── hemoptysisheart
-        │       └── github
-        │           └── com
-        │               └── tutorial
-        │                   └── spring
-        │                       └── web
-        │                           ├── ApplicationRunner.java
-        │                           ├── RootController.java
-        │                           └── SignUpReq.java
+        │   └── hemoptysisheart.github.com.tutorial.spring.web
+        │       ├── ApplicationRunner.java
+        │       ├── RootController.java
+        │       └── SignUpReq.java
         └── resources
             ├── application.yml
             └── templates
@@ -58,7 +53,6 @@ DDL을 실행해 스키마를 생성한다.
                     ├── index.html
                     └── signup.html
 ```
-
 [전체 구조](step_1_tree.txt)
 
 ## STEP 2 - 의존성 추가하기
@@ -158,16 +152,11 @@ public class JpaConfiguration {
 ```
 ./src/main
 ├── java
-│   └── hemoptysisheart
-│       └── github
-│           └── com
-│               └── tutorial
-│                   └── spring
-│                       └── web
-│                           ├── ApplicationRunner.java
-│                           ├── JpaConfiguration.java
-│                           ├── RootController.java
-│                           └── SignUpReq.java
+│   └── hemoptysisheart.github.com.tutorial.spring.web
+│       ├── ApplicationRunner.java
+│       ├── JpaConfiguration.java
+│       ├── RootController.java
+│       └── SignUpReq.java
 └── resources
     ├── application.yml
     └── templates
@@ -282,17 +271,12 @@ ENGINE = InnoDB;
 ```
 ./src/main
 ├── java
-│   └── hemoptysisheart
-│       └── github
-│           └── com
-│               └── tutorial
-│                   └── spring
-│                       └── web
-│                           ├── AccountEntity.java
-│                           ├── ApplicationRunner.java
-│                           ├── JpaConfiguration.java
-│                           ├── RootController.java
-│                           └── SignUpReq.java
+│   └── hemoptysisheart.github.com.tutorial.spring.web
+│       ├── AccountEntity.java
+│       ├── ApplicationRunner.java
+│       ├── JpaConfiguration.java
+│       ├── RootController.java
+│       └── SignUpReq.java
 └── resources
     ├── application.yml
     └── templates
@@ -344,18 +328,13 @@ WHERE
 ```
 ./src/main
 ├── java
-│   └── hemoptysisheart
-│       └── github
-│           └── com
-│               └── tutorial
-│                   └── spring
-│                       └── web
-│                           ├── AccountEntity.java
-│                           ├── AccountRepository.java
-│                           ├── ApplicationRunner.java
-│                           ├── JpaConfiguration.java
-│                           ├── RootController.java
-│                           └── SignUpReq.java
+│   └── hemoptysisheart.github.com.tutorial.spring.web
+│       ├── AccountEntity.java
+│       ├── AccountRepository.java
+│       ├── ApplicationRunner.java
+│       ├── JpaConfiguration.java
+│       ├── RootController.java
+│       └── SignUpReq.java
 └── resources
     ├── application.yml
     └── templates

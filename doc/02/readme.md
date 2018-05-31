@@ -69,7 +69,7 @@ java      1675 hemoptysisheart   52u  IPv6 0x361e34fce6328eb3      0t0  TCP *:80
 
 하지만 여전히 별다른 로직은 없으며, HTTP 리퀘스트를 매핑할 컨트롤러도, 뷰도 없기 때문에 브라우저로 볼 수 있는 페이지 또한 없다.
 
-### 참고
+### 프로젝트 구조
 
 `STEP 2`가 끝난 후의 프로젝트 디렉토리 구조.
 `mvn clean`으로 소스코드가 아닌 파일을 삭제했다.
@@ -105,3 +105,4 @@ java      1675 hemoptysisheart   52u  IPv6 0x361e34fce6328eb3      0t0  TCP *:80
 
 15 directories, 11 files
 ```
+[전체 구조](step_2_tree.txt)

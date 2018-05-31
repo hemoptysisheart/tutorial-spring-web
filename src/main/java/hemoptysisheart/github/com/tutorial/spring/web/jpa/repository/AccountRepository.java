@@ -1,5 +1,7 @@
-package hemoptysisheart.github.com.tutorial.spring.web;
+package hemoptysisheart.github.com.tutorial.spring.web.jpa.repository;
 
+import hemoptysisheart.github.com.tutorial.spring.web.configuration.JpaConfiguration;
+import hemoptysisheart.github.com.tutorial.spring.web.jpa.entity.AccountEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

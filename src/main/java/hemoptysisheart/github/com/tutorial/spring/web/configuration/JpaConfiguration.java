@@ -1,5 +1,7 @@
-package hemoptysisheart.github.com.tutorial.spring.web;
+package hemoptysisheart.github.com.tutorial.spring.web.configuration;
 
+import hemoptysisheart.github.com.tutorial.spring.web.jpa.entity.EntityConfiguration;
+import hemoptysisheart.github.com.tutorial.spring.web.jpa.repository.RepositoryConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
@@ -22,7 +24,7 @@ import javax.sql.DataSource;
  * @since 2018. 5. 24.
  */
 @Configuration  // 스프링 JavaConfig 클래스임을 표시해준다. 이게 있어야 스프링 프레임워크가 설정으로 인식한다.
-@EnableJpaRepositories  // SQL 쿼리를 쉽게 생성할 수 있는 JPA 레포지토리를 사용하도록 설정한다.
+@EnableJpaRepositories(basePackageClasses = {RepositoryConfiguration.class})
 @EnableTransactionManagement    // 트랜잭션 관리자를 설정하도록 설정한다.
 public class JpaConfiguration {
     /**
@@ -51,7 +53,7 @@ public class JpaConfiguration {
 
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setDataSource(dataSource());
-        factory.setPackagesToScan(JpaConfiguration.class.getPackageName());
+        factory.setPackagesToScan(EntityConfiguration.PACKAGE_NAME);
         factory.setJpaVendorAdapter(adapter);
 
         return factory;

@@ -1,0 +1,9 @@
+# TODO 환경별 설정을 .gitignore로 바꾸고 샘플 설정 파일을 추가.
+spring:
+  datasource:
+    hikari:
+      jdbc-url: jdbc:mysql://localhost/tutorial_spring_web?connectionCollation=utf8mb4_bin
+      username: root
+      password: ''
+  thymeleaf:
+    cache: false

@@ -1,4 +1,4 @@
-package hemoptysisheart.github.com.tutorial.spring.web;
+package hemoptysisheart.github.com.tutorial.spring.web.controller.req;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;

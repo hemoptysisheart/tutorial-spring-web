@@ -7,3 +7,4 @@
 1. [CH.05 - JPA 설정](05/readme.md)
 1. [CH.06 - 서비스 레이어](06/readme.md)
 1. [CH.07 - 트랜잭션 관리 개선하기](07/readme.md)
+1. [CH.08 - 프로젝트 구조 개선하기](08/readme.md)

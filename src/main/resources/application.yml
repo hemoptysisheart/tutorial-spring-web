@@ -2,13 +2,22 @@ spring:
   datasource:
     hikari:
       driver-class-name: com.mysql.jdbc.Driver
-      jdbc-url: jdbc:mysql://localhost/tutorial_spring_web?connectionCollation=utf8mb4_bin
-      username: root
-      password: ''
       idle-timeout: 12000
       connection-test-query: SELECT 1
   jpa:
     database: mysql
     open-in-view: false
   thymeleaf:
-    cache: false
+    cache: true
+    check-template: true
+    check-template-location: true
+    enabled: true
+    enable-spring-el-compiler: false
+    encoding: UTF-8
+    mode: HTML
+    prefix: file:./templates/
+    suffix: .html
+    reactive:
+      max-chunk-size: 0
+    servlet:
+      content-type: text/html
