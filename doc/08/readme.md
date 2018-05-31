@@ -366,11 +366,12 @@ public class EntityConfiguration {
                 ├── newbie.html
                 └── signup.html
 ```
+[전체 구조](step_4_rev_1_tree.txt)
 
 그런데 `spring.jpa.open-in-view` 같은 실행환경에 의존성이 없는 설정은 공통으로 사용하고,
 환경에 의존적인 설정만 추가하거나 덮어써서 하는 것이 문제가 생길 위험이 낮아진다.
 
-* `spring.datasource.hikari.*` : 공통 설정은 `src/main/resources/application.yml`에서, 환경별 설정은 `config/application.yml`에서 가져와서 전체 설정을 가져온다.
+* `spring.datasource.hikari.*` : 공통(기본) 설정은 `src/main/resources/application.yml`에서, 환경별 설정은 `config/application.yml`에서 가져와서 전체 설정을 가져온다.
 * `spring.jpa.*` : 공통 설정인 `src/main/resources/application.yml`에서 가져온다.
 * `spring.thymeleaf.cache` : `src/main/resources/application.yml`의 설정을 `config/application.yml`에서 덮어쓴다.
 
@@ -418,3 +419,95 @@ spring:
                 └── signup.html
 ```
 [전체 구조](step_4_rev_2_tree.txt)
+
+## STEP 5 - 프론트엔드와 백엔드 파일 분리하기
+
+현재 구조는 백엔드인 Java 파일과 프론트엔드인 Thymeleaf 템플릿이 함께(`src/main/*`) 있고
+패키징한 `*.jar` 파일이 Java 바이트코드와 Thymeleaf 템플릿을 모두 포함한다.
+
+프론트엔드와 백엔드는 변경하는 이유도 시점도 주기도 필요한 전문성도 모두 다르다.
+따라서 한꺼번에 배포하는 것 보다는 따로 배포하는 적합하다.
+
+그러니까, 프론트엔드 소스도 설정 파일과 마찬가지로 외부로 뺄 필요가 있다.
+
+`./src/main/resources/tepmplates` 디렉토리를 `./templates`로 옮기고 설정에 반영한다.
+
+이렇게 패키징에서 제외해 외부로 빼면, `th:replace`, `th:include` 등의
+UI 모듈화를 프론트엔드에서 독립적으로 수행할 수 있게 된다.
+
+```yaml
+spring:
+  #  ... 생략 ...
+  thymeleaf:
+    cache: true
+    check-template: true
+    check-template-location: true
+    enabled: true
+    enable-spring-el-compiler: false
+    encoding: UTF-8
+    mode: HTML
+    prefix: file:./templates/
+    suffix: .html
+    reactive:
+      max-chunk-size: 0
+    servlet:
+      content-type: text/html
+```
+[src/main/resources/application.yml](../../src/main/resources/application.yml)
+
+> 얼마간 Spring Boot에서 설정의 `spring.thymeleaf` 항목을 모두 적지 않고
+> `config/application.yml`파일에 일부만 작성할 경우(`spring.thymeleaf.cache` 등),
+> `src/main/resources/application.yml`의 설정을 무시하는 문제가 있었다.
+> 지금은 수정되었는지는 아직 모르겠다.
+
+### 프로젝트 구조
+
+```
+.
+├── config
+│   └── application.yml
+├── src/main
+│   ├── java
+│   │   └── hemoptysisheart.github.com.tutorial.spring.web
+│   │       ├── borderline
+│   │       │   ├── AccountBorderline.java
+│   │       │   ├── BorderlineConfiguration.java
+│   │       │   ├── cmd
+│   │       │   │   └── CreateAccountCmd.java
+│   │       │   └── po
+│   │       │       └── AccountPo.java
+│   │       ├── configuration
+│   │       │   ├── ApplicationConfiguration.java
+│   │       │   ├── JpaConfiguration.java
+│   │       │   └── WebMvcConfiguration.java
+│   │       ├── controller
+│   │       │   ├── ControllerConfiguration.java
+│   │       │   ├── RootController.java
+│   │       │   └── req
+│   │       │       └── SignUpReq.java
+│   │       ├── dao
+│   │       │   ├── AccountDao.java
+│   │       │   └── DaoConfiguration.java
+│   │       ├── jpa
+│   │       │   ├── entity
+│   │       │   │   ├── AccountEntity.java
+│   │       │   │   └── EntityConfiguration.java
+│   │       │   └── repository
+│   │       │       ├── AccountRepository.java
+│   │       │       └── RepositoryConfiguration.java
+│   │       ├── runner
+│   │       │   └── ApplicationRunner.java
+│   │       └── service
+│   │           ├── AccountService.java
+│   │           ├── ServiceConfiguration.java
+│   │           └── params
+│   │               └── CreateAccountParams.java
+│   └── resources
+│       └── application.yml
+└── templates
+    └── _
+        ├── index.html
+        ├── newbie.html
+        └── signup.html
+```
+[전체 구조](step_5_tree.txt)
