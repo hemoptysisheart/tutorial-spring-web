@@ -124,15 +124,10 @@ public class SignUpReq {
 ```
 ./src/main
 ├── java
-│   └── hemoptysisheart
-│       └── github
-│           └── com
-│               └── tutorial
-│                   └── spring
-│                       └── web
-│                           ├── ApplicationRunner.java
-│                           ├── RootController.java
-│                           └── SignUpReq.java
+│   └── hemoptysisheart.github.com.tutorial.spring.web
+│       ├── ApplicationRunner.java
+│       ├── RootController.java
+│       └── SignUpReq.java
 └── resources
     ├── application.yml
     └── templates
@@ -140,7 +135,6 @@ public class SignUpReq {
             ├── index.html
             └── signup.html
 ```
-
 [전체 구조](step_1_tree.txt)
 
 ## STEP 2 - 검증 실패에 대응하기 : 1. 기본적인 검증 실패 처리하기

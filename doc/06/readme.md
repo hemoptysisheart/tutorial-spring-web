@@ -70,19 +70,14 @@ public class RootController {
 ```
 ./src/main
 ├── java
-│   └── hemoptysisheart
-│       └── github
-│           └── com
-│               └── tutorial
-│                   └── spring
-│                       └── web
-│                           ├── AccountEntity.java
-│                           ├── AccountRepository.java
-│                           ├── AccountService.java
-│                           ├── ApplicationRunner.java
-│                           ├── JpaConfiguration.java
-│                           ├── RootController.java
-│                           └── SignUpReq.java
+│   └── hemoptysisheart.github.com.tutorial.spring.web
+│       ├── AccountEntity.java
+│       ├── AccountRepository.java
+│       ├── AccountService.java
+│       ├── ApplicationRunner.java
+│       ├── JpaConfiguration.java
+│       ├── RootController.java
+│       └── SignUpReq.java
 └── resources
     ├── application.yml
     └── templates
@@ -150,20 +145,15 @@ public String signUp(@ModelAttribute("signUpReq") @Valid final SignUpReq signUpR
 ```
 ./src/main
 ├── java
-│   └── hemoptysisheart
-│       └── github
-│           └── com
-│               └── tutorial
-│                   └── spring
-│                       └── web
-│                           ├── AccountEntity.java
-│                           ├── AccountRepository.java
-│                           ├── AccountService.java
-│                           ├── ApplicationRunner.java
-│                           ├── CreateAccountParams.java
-│                           ├── JpaConfiguration.java
-│                           ├── RootController.java
-│                           └── SignUpReq.java
+│   └── hemoptysisheart.github.com.tutorial.spring.web
+│       ├── AccountEntity.java
+│       ├── AccountRepository.java
+│       ├── AccountService.java
+│       ├── ApplicationRunner.java
+│       ├── CreateAccountParams.java
+│       ├── JpaConfiguration.java
+│       ├── RootController.java
+│       └── SignUpReq.java
 └── resources
     ├── application.yml
     └── templates

@@ -127,24 +127,19 @@ public class AccountPo {
 ```
 ./src/main
 ├── java
-│   └── hemoptysisheart
-│       └── github
-│           └── com
-│               └── tutorial
-│                   └── spring
-│                       └── web
-│                           ├── AccountBorderline.java
-│                           ├── AccountDao.java
-│                           ├── AccountEntity.java
-│                           ├── AccountPo.java
-│                           ├── AccountRepository.java
-│                           ├── AccountService.java
-│                           ├── ApplicationRunner.java
-│                           ├── CreateAccountCmd.java
-│                           ├── CreateAccountParams.java
-│                           ├── JpaConfiguration.java
-│                           ├── RootController.java
-│                           └── SignUpReq.java
+│   └── hemoptysisheart.github.com.tutorial.spring.web
+│       ├── AccountBorderline.java
+│       ├── AccountDao.java
+│       ├── AccountEntity.java
+│       ├── AccountPo.java
+│       ├── AccountRepository.java
+│       ├── AccountService.java
+│       ├── ApplicationRunner.java
+│       ├── CreateAccountCmd.java
+│       ├── CreateAccountParams.java
+│       ├── JpaConfiguration.java
+│       ├── RootController.java
+│       └── SignUpReq.java
 └── resources
     ├── application.yml
     └── templates

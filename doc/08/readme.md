@@ -8,33 +8,28 @@
 ```
 ./src/main
 ├── java
-│   └── hemoptysisheart
-│       └── github
-│           └── com
-│               └── tutorial
-│                   └── spring
-│                       └── web
-│                           ├── borderline
-│                           │   ├── AccountBorderline.java
-│                           │   ├── AccountPo.java
-│                           │   └── CreateAccountCmd.java
-│                           ├── configuration
-│                           │   └── JpaConfiguration.java
-│                           ├── controller
-│                           │   ├── RootController.java
-│                           │   └── SignUpReq.java
-│                           ├── dao
-│                           │   └── AccountDao.java
-│                           ├── jpa
-│                           │   ├── entity
-│                           │   │   └── AccountEntity.java
-│                           │   └── repository
-│                           │       └── AccountRepository.java
-│                           ├── runner
-│                           │   └── ApplicationRunner.java
-│                           └── service
-│                               ├── AccountService.java
-│                               └── CreateAccountParams.java
+│   └── hemoptysisheart.github.com.tutorial.spring.web
+│       ├── borderline
+│       │   ├── AccountBorderline.java
+│       │   ├── AccountPo.java
+│       │   └── CreateAccountCmd.java
+│       ├── configuration
+│       │   └── JpaConfiguration.java
+│       ├── controller
+│       │   ├── RootController.java
+│       │   └── SignUpReq.java
+│       ├── dao
+│       │   └── AccountDao.java
+│       ├── jpa
+│       │   ├── entity
+│       │   │   └── AccountEntity.java
+│       │   └── repository
+│       │       └── AccountRepository.java
+│       ├── runner
+│       │   └── ApplicationRunner.java
+│       └── service
+│           ├── AccountService.java
+│           └── CreateAccountParams.java
 └── resources
     ├── application.yml
     └── templates
@@ -224,41 +219,36 @@ public class EntityConfiguration {
 ```
 ./src/main
 ├── java
-│   └── hemoptysisheart
-│       └── github
-│           └── com
-│               └── tutorial
-│                   └── spring
-│                       └── web
-│                           ├── borderline
-│                           │   ├── AccountBorderline.java
-│                           │   ├── AccountPo.java
-│                           │   ├── BorderlineConfiguration.java
-│                           │   └── CreateAccountCmd.java
-│                           ├── configuration
-│                           │   ├── ApplicationConfiguration.java
-│                           │   ├── JpaConfiguration.java
-│                           │   └── WebMvcConfiguration.java
-│                           ├── controller
-│                           │   ├── ControllerConfiguration.java
-│                           │   ├── RootController.java
-│                           │   └── SignUpReq.java
-│                           ├── dao
-│                           │   ├── AccountDao.java
-│                           │   └── DaoConfiguration.java
-│                           ├── jpa
-│                           │   ├── entity
-│                           │   │   ├── AccountEntity.java
-│                           │   │   └── EntityConfiguration.java
-│                           │   └── repository
-│                           │       ├── AccountRepository.java
-│                           │       └── RepositoryConfiguration.java
-│                           ├── runner
-│                           │   └── ApplicationRunner.java
-│                           └── service
-│                               ├── AccountService.java
-│                               ├── CreateAccountParams.java
-│                               └── ServiceConfiguration.java
+│   └── hemoptysisheart.github.com.tutorial.spring.web
+│       ├── borderline
+│       │   ├── AccountBorderline.java
+│       │   ├── AccountPo.java
+│       │   ├── BorderlineConfiguration.java
+│       │   └── CreateAccountCmd.java
+│       ├── configuration
+│       │   ├── ApplicationConfiguration.java
+│       │   ├── JpaConfiguration.java
+│       │   └── WebMvcConfiguration.java
+│       ├── controller
+│       │   ├── ControllerConfiguration.java
+│       │   ├── RootController.java
+│       │   └── SignUpReq.java
+│       ├── dao
+│       │   ├── AccountDao.java
+│       │   └── DaoConfiguration.java
+│       ├── jpa
+│       │   ├── entity
+│       │   │   ├── AccountEntity.java
+│       │   │   └── EntityConfiguration.java
+│       │   └── repository
+│       │       ├── AccountRepository.java
+│       │       └── RepositoryConfiguration.java
+│       ├── runner
+│       │   └── ApplicationRunner.java
+│       └── service
+│           ├── AccountService.java
+│           ├── CreateAccountParams.java
+│           └── ServiceConfiguration.java
 └── resources
     ├── application.yml
     └── templates
@@ -284,45 +274,40 @@ public class EntityConfiguration {
 ```
 ./src/main
 ├── java
-│   └── hemoptysisheart
-│       └── github
-│           └── com
-│               └── tutorial
-│                   └── spring
-│                       └── web
-│                           ├── borderline
-│                           │   ├── AccountBorderline.java
-│                           │   ├── BorderlineConfiguration.java
-│                           │   ├── cmd
-│                           │   │   └── CreateAccountCmd.java
-│                           │   └── po
-│                           │       └── AccountPo.java
-│                           ├── configuration
-│                           │   ├── ApplicationConfiguration.java
-│                           │   ├── JpaConfiguration.java
-│                           │   └── WebMvcConfiguration.java
-│                           ├── controller
-│                           │   ├── ControllerConfiguration.java
-│                           │   ├── RootController.java
-│                           │   └── req
-│                           │       └── SignUpReq.java
-│                           ├── dao
-│                           │   ├── AccountDao.java
-│                           │   └── DaoConfiguration.java
-│                           ├── jpa
-│                           │   ├── entity
-│                           │   │   ├── AccountEntity.java
-│                           │   │   └── EntityConfiguration.java
-│                           │   └── repository
-│                           │       ├── AccountRepository.java
-│                           │       └── RepositoryConfiguration.java
-│                           ├── runner
-│                           │   └── ApplicationRunner.java
-│                           └── service
-│                               ├── AccountService.java
-│                               ├── ServiceConfiguration.java
-│                               └── params
-│                                   └── CreateAccountParams.java
+│   └── hemoptysisheart.github.com.tutorial.spring.web
+│       ├── borderline
+│       │   ├── AccountBorderline.java
+│       │   ├── BorderlineConfiguration.java
+│       │   ├── cmd
+│       │   │   └── CreateAccountCmd.java
+│       │   └── po
+│       │       └── AccountPo.java
+│       ├── configuration
+│       │   ├── ApplicationConfiguration.java
+│       │   ├── JpaConfiguration.java
+│       │   └── WebMvcConfiguration.java
+│       ├── controller
+│       │   ├── ControllerConfiguration.java
+│       │   ├── RootController.java
+│       │   └── req
+│       │       └── SignUpReq.java
+│       ├── dao
+│       │   ├── AccountDao.java
+│       │   └── DaoConfiguration.java
+│       ├── jpa
+│       │   ├── entity
+│       │   │   ├── AccountEntity.java
+│       │   │   └── EntityConfiguration.java
+│       │   └── repository
+│       │       ├── AccountRepository.java
+│       │       └── RepositoryConfiguration.java
+│       ├── runner
+│       │   └── ApplicationRunner.java
+│       └── service
+│           ├── AccountService.java
+│           ├── ServiceConfiguration.java
+│           └── params
+│               └── CreateAccountParams.java
 └── resources
     ├── application.yml
     └── templates
