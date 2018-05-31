@@ -496,3 +496,95 @@ spring:
         └── signup.html
 ```
 [전체 구조](step_5_tree.txt)
+
+## STEP 6 - 스프링 컴포넌트에 인터페이스 사용하기
+
+단위 테스트 작성이나 같은 기능을 여러 방식으로 구현해야 할 필요가 있을 때 하는 것이 좋지만,
+이 이상 클래스로 작성했다가 나중에 한번에 바꾸기엔 양이 많아 ~귀찮으니까~ 미리 인터페이스로 분리한다.
+
+2부분을 변경한다.
+
+1. 인터페이스를 분리한다.
+1. 클래스의 접근 제한제를 `public`에서 `(default)`로 변경한다.
+
+웹MVC 컨트롤러에 맞는 메서드만 남긴다.
+
+```java
+package hemoptysisheart.github.com.tutorial.spring.web.controller;
+
+// ... 생략 ...
+
+@RequestMapping
+public interface RootController {
+    @GetMapping
+    String index(Model model);
+
+    @GetMapping("/signup")
+    String signUpForm(Model model);
+
+    @PostMapping("/signup")
+    String signUp(@ModelAttribute("signUpReq") @Valid SignUpReq signUpReq, BindingResult binding, Model model);
+}
+```
+[RootController.java](../../src/main/java/hemoptysisheart/github/com/tutorial/spring/web/controller/RootController.java)
+
+구현의 접근제한자를 디폴트로 변경해서 패키지 외부에서는 접근하지 못하고,
+단위테스트에서는 접근할 수 있도록 열어둔다.
+Java 9 이후의 모듈 시스템을 활용하면, 구현을 별도 패키지로 빼고 모듈 외부에 노출하지 않는 방법도 사용할 수 있다.
+
+```java
+package hemoptysisheart.github.com.tutorial.spring.web.controller;
+
+// ... 생략 ...
+
+@Controller
+class RootControllerImpl implements RootController {
+    // ... 생략 ...
+}
+```
+[RootControllerImpl.java](../../src/main/java/hemoptysisheart/github/com/tutorial/spring/web/controller/RootControllerImpl.java)
+
+### 프로젝트 구조
+
+```
+./src/main/java
+└── hemoptysisheart.github.com.tutorial.spring.web
+    ├── borderline
+    │   ├── AccountBorderline.java
+    │   ├── AccountBorderlineImpl.java
+    │   ├── BorderlineConfiguration.java
+    │   ├── cmd
+    │   │   └── CreateAccountCmd.java
+    │   └── po
+    │       └── AccountPo.java
+    ├── configuration
+    │   ├── ApplicationConfiguration.java
+    │   ├── JpaConfiguration.java
+    │   └── WebMvcConfiguration.java
+    ├── controller
+    │   ├── ControllerConfiguration.java
+    │   ├── RootController.java
+    │   ├── RootControllerImpl.java
+    │   └── req
+    │       └── SignUpReq.java
+    ├── dao
+    │   ├── AccountDao.java
+    │   ├── AccountDaoImpl.java
+    │   └── DaoConfiguration.java
+    ├── jpa
+    │   ├── entity
+    │   │   ├── AccountEntity.java
+    │   │   └── EntityConfiguration.java
+    │   └── repository
+    │       ├── AccountRepository.java
+    │       └── RepositoryConfiguration.java
+    ├── runner
+    │   └── ApplicationRunner.java
+    └── service
+        ├── AccountService.java
+        ├── AccountServiceImpl.java
+        ├── ServiceConfiguration.java
+        └── params
+            └── CreateAccountParams.java
+```
+[전체 구조](step_6_tree.txt)
