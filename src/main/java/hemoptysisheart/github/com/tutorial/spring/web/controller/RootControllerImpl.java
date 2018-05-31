@@ -23,6 +23,22 @@ class RootControllerImpl implements RootController {
     @Autowired
     private AccountBorderline accountBorderline;
 
+    /**
+     * 계정 등록 폼 페이지 출력에 필요한 {@link Model} 설정과 템플릿 선택을 담당한다.
+     *
+     * @param model
+     * @return
+     */
+    private String doSignUpForm(Model model) {
+        if (!model.containsAttribute("signUpReq")) {
+            // 바인딩 에러로 등록 폼을 다시 출력해야 할 경우,
+            // 기존 입력값 유지와 BindingResult 보호를 위해
+            // 기존 입력값이 없을 때만 어트리뷰트를 추가한다.
+            model.addAttribute("signUpReq", new SignUpReq());
+        }
+        return "_/signup";
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // hemoptysisheart.github.com.tutorial.spring.web.controller.RootController
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -38,8 +54,7 @@ class RootControllerImpl implements RootController {
 
     @Override
     public String signUpForm(final Model model) {
-        model.addAttribute("signUpReq", new SignUpReq());
-        return "_/signup";
+        return doSignUpForm(model);
     }
 
     @Override
@@ -49,7 +64,7 @@ class RootControllerImpl implements RootController {
         }
 
         if (binding.hasErrors()) {
-            return "_/signup";
+            return doSignUpForm(model);
         } else {
             CreateAccountCmd cmd = new CreateAccountCmd(signUpReq.getEmail(), signUpReq.getNickname(), signUpReq.getPassword());
             AccountPo account = this.accountBorderline.create(cmd);
