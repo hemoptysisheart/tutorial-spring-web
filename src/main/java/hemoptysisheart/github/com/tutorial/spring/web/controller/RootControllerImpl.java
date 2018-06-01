@@ -4,6 +4,7 @@ import hemoptysisheart.github.com.tutorial.spring.web.borderline.AccountBorderli
 import hemoptysisheart.github.com.tutorial.spring.web.borderline.cmd.CreateAccountCmd;
 import hemoptysisheart.github.com.tutorial.spring.web.borderline.po.AccountPo;
 import hemoptysisheart.github.com.tutorial.spring.web.controller.req.SignUpReq;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,12 +15,17 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import javax.validation.Valid;
 import java.time.ZonedDateTime;
 
+import static java.lang.String.format;
+import static org.slf4j.LoggerFactory.getLogger;
+
 /**
  * @author hemoptysisheart
  * @since 2018. 5. 22.
  */
 @Controller
 class RootControllerImpl implements RootController {
+    private static final Logger log = getLogger(RootControllerImpl.class);
+
     @Autowired
     private AccountBorderline accountBorderline;
 
@@ -45,31 +51,59 @@ class RootControllerImpl implements RootController {
 
     @Override
     public String index(final Model model) {
+        if (log.isTraceEnabled()) {
+            // 메서드 입력 로그.
+            log.trace(format("index args : model=%s", model));
+        }
+
         // 별도의 로직이 필요없는 현재 시각 정보를 뷰로 넘긴다.
         model.addAttribute("timestamp", ZonedDateTime.now());
 
-        // 뷰 템플릿 출력을 시험하기 위해 다른 로직 없이 템플릿 이름을 리턴한다.
-        return "_/index";
+        String template = "_/index";
+        if (log.isTraceEnabled()) {
+            // 메서드 출력(혹은 결과) 로그.
+            log.trace(format("index result : template='%s', model=%s", template, model));
+        }
+        return template;
     }
 
     @Override
     public String signUpForm(final Model model) {
-        return doSignUpForm(model);
+        if (log.isTraceEnabled()) {
+            log.trace(format("signUpForm args : model=%s", model));
+        }
+
+        String template = doSignUpForm(model);
+
+        if (log.isTraceEnabled()) {
+            log.trace(format("signUpForm result : template='%s', model=%s", template, model));
+        }
+        return template;
     }
 
     @Override
     public String signUp(@ModelAttribute("signUpReq") @Valid final SignUpReq signUpReq, final BindingResult binding, final Model model) {
+        if (log.isTraceEnabled()) {
+            log.trace(format("signUp args : signUpReq=%s, binding=%s, model=%s", signUpReq, binding, model));
+        }
+
         if (!signUpReq.getPassword().equals(signUpReq.getConfirm())) {
             binding.addError(new FieldError("signUpReq", "confirm", "password does not match."));
         }
 
+        String template;
         if (binding.hasErrors()) {
-            return doSignUpForm(model);
+            template = doSignUpForm(model);
         } else {
             CreateAccountCmd cmd = new CreateAccountCmd(signUpReq.getEmail(), signUpReq.getNickname(), signUpReq.getPassword());
             AccountPo account = this.accountBorderline.create(cmd);
             model.addAttribute("account", account);
-            return "_/newbie";
+            template = "_/newbie";
         }
+
+        if (log.isTraceEnabled()) {
+            log.trace(format("signUp result : template='%s', model=%s", template, model));
+        }
+        return template;
     }
 }

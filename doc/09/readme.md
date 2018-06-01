@@ -45,3 +45,74 @@ class RootControllerImpl implements RootController {
 }
 ```
 [RootControllerImpl.java](../../src/main/java/hemoptysisheart/github/com/tutorial/spring/web/controller/RootControllerImpl.java)
+
+## STEP 2 - 디버깅 로그
+
+디버깅을 위해 각 메서드의 입출력 로그를 남긴다.
+모든 메서드에 대해 모든 입출력 로그를 남긴다면 성능에 문제가 생긴다.
+
+로그 레벨과 실행환경 설정으로 개발 환경(특히 로컬)에서만 메서드 입출력 로그를 남긴다.
+
+### 애플리케이션 기본 설정
+
+1. 기본 설정에서는 경고(`warn`) 이상의 로그만 남기도록 지정한다.
+
+```yaml
+# ... 생략 ...
+logging:
+  level:
+    root: warn
+```
+[src/main/resources/application.yml](../../src/main/resources/application.yml)
+
+### 실행환경별 설정
+
+1. 로그를 남긴 코드 위치를 정확히 파악할 수 있도록 정보(전체 로거 이름, 메서드 이름, 라인번호)를 추가한다.
+1. 이름이 `hemoptysisheart.github.com.tutorial.spring.web`로 시작하면 트레이스(`trace`) 이상의 로그를 남기도록 지정한다.
+
+```yaml
+
+logging:
+  pattern:
+    console: '%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(-%5p) %clr(---){faint} %clr([%15.15t]){faint} %clr(%logger#%M [L.%L]){cyan} %clr(:){faint} %m%n%wEx'
+  level:
+    hemoptysisheart.github.com.tutorial.spring.web: trace
+```
+[config/application.yml](../../config/application.yml)
+
+### 로깅 코드
+
+메서드 입출력 로그를 남기는 코드를 출력한다.
+로그를 출력하기 전에 해당 레벨의 로그를 출력할 수 있는지 확인해서(`log.isTraceEnabled()`)
+불필요한 문자열을 생성하지 않도록 한다.
+
+```java
+package hemoptysisheart.github.com.tutorial.spring.web.controller;
+
+// ... 생략 ...
+
+@Controller
+class RootControllerImpl implements RootController {
+    private static final Logger log = getLogger(RootControllerImpl.class);
+
+    // ... 생략 ...
+
+    @Override
+    public String index(final Model model) {
+        if (log.isTraceEnabled()) {
+            log.trace(format("index args : model=%s", model));
+        }
+
+        model.addAttribute("timestamp", ZonedDateTime.now());
+
+        String template = "_/index";
+        if (log.isTraceEnabled()) {
+            log.trace(format("index result : template='%s', model=%s", template, model));
+        }
+        return template;
+    }
+
+    // ... 생략 ...
+}
+```
+[RootControllerImpl.java](../../src/main/java/hemoptysisheart/github/com/tutorial/spring/web/controller/RootControllerImpl.java)
