@@ -8,6 +8,9 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
+import java.time.Instant;
+
 import static java.lang.String.format;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -34,8 +37,16 @@ class AccountServiceImpl implements AccountService {
             log.trace(format("create args : params=%s", params));
         }
 
+        Instant start = Instant.now();
+
         Account account = new AccountEntity(params.getEmail(), params.getNickname(), params.getPassword());
         account = this.accountDao.insert(account);
+
+        Instant end = Instant.now();
+
+        if (log.isInfoEnabled()) {
+            log.info(format("account creation : start=%s, end=%s, elapsed=%s, account=%s", start, end, Duration.between(start, end), account));
+        }
 
         if (log.isTraceEnabled()) {
             log.trace(format("create return : %s", account));

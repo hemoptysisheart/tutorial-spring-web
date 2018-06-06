@@ -116,3 +116,144 @@ class RootControllerImpl implements RootController {
 }
 ```
 [RootControllerImpl.java](../../src/main/java/hemoptysisheart/github/com/tutorial/spring/web/controller/RootControllerImpl.java)
+
+## STEP 3 - 모니터링 로그
+
+모니터링 로그는 로직 오류를 찾기위한 디버깅 로그와는 달리,
+로그 데이터를 영구적으로 저장한 후 해당 데이터를 분석하는 과정을 전제로 한다.
+
+데이터 분석의 목적은 사용자 행동 분석과 개선이 필요한 부분 찾기 등으로,
+이후의 개발 작업 및 방향을 정하는 의사결정에 필요한 기초 자료를 확보하는 활동이다.
+
+비지니스 로직은 JVM 내부의 일이고, 이건 밖에선 보이지 않는 부분이다.
+모니터링 로그는 이 블랙박스에서 필요한 정보를 밖으로 내보내주는 역할을 한다.
+예를 들면 특정 로직 실행에 걸리는 시간이라던지, 예외가 발생하는 인자의 정보라던지.
+
+다음의 변경사항으로 전체 응답시간 내에서 계정 등록 비지니스 로직(`AccountService.create(CreateAccountParams)`)이 차지하는 부분을 알려준다.
+이 정보와 서블릿 컨테이너 혹은 로드밸러서의 로그와 함께 분석하면 어느 부분의 성능 개선이 필요한지 파악할 수 있다.
+
+### 로그 설정
+
+분석 기초 자료는 영구 저장이 기본이고, 영구 저장의 기본은 __파일로 저장하기__ 이다.
+파일로 저장할 수 있도록 실행환경에 맞춰 저장 경로를 지정한다.
+
+* 워킹 디렉토리의 `log` 디렉토리에 로그 파일을 저장한다(`logging.path`).
+* 개발 환경에서 테스트 용도로 로그 파일의 크기(`logging.file.max-size`)를 작게 설정한다.
+* 성능 부하를 줄이도록 메서드 이름, 행 번호, 색상을 제거한 패턴을 지정한다(`logging.pattern.file`).
+* 로그 항목의 구분자를 ` --- `로 변경.
+
+> `logging.pattern.console`의 패턴은 Spring Boot의 기본 로그 패턴에서 로거 이름 제한 삭제, 메서드 이름 및 행 번호를 추가한 패턴이다,
+
+```yaml
+logging:
+  path: ./log
+  file:
+    max-size: 10KB
+  pattern:
+    console: '%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} - %clr(%5p) %clr(---){faint} %clr([%15.15t]){faint} %clr(%logger#%M [L.%L]){cyan} %clr(:){faint} %m%n%wEx'
+    file: '%d{yyyy-MM-dd HH:mm:ss.SSS} --- %p --- [%t] %logger --- %m%n%wEx'
+```
+[config/application.yml](../../config/application.yml)
+
+### 로그 생성
+
+내부 로직의 계정 등록에 필요한 성능을 알 수 있는 시간 정보를 만들어 로그를 저장한다(로직 시작 시각, 로직 종료 시각, 로직 경과 시간, 생성 데이터).
+
+```java
+package hemoptysisheart.github.com.tutorial.spring.web.service;
+
+// ... 생략 ...
+
+@Service
+class AccountServiceImpl implements AccountService {
+    private static final Logger log = getLogger(AccountServiceImpl.class);
+
+    // ... 생략 ...
+
+    @Override
+    public Account create(CreateAccountParams params) {
+        // ... 생략 ...
+
+        Instant start = Instant.now();
+        // ... 생략 ...
+        Instant end = Instant.now();
+
+        if (log.isInfoEnabled()) {
+            log.info(format("account creation : start=%s, end=%s, elapsed=%s, account=%s", start, end, Duration.between(start, end), account));
+        }
+
+        // ... 생략 ...
+        return account;
+    }
+}
+```
+[AccountServiceImpl.java](../../src/main/java/hemoptysisheart/github/com/tutorial/spring/web/service/AccountServiceImpl.java)
+
+14행에서 다음 로그를 확인할 수 있다.
+
+```
+2018-06-06 14:15:18.013 --- INFO --- [http-nio-8080-exec-3] hemoptysisheart.github.com.tutorial.spring.web.service.AccountServiceImpl --- account creation : start=2018-06-06T05:15:17.972846Z, end=2018-06-06T05:15:18.013078Z, elapsed=PT0.040232S, account=AccountEntity{id=1, email='a@a', nickname='AA', password=[ PROTECTED ]}
+```
+[전체 로그](step_3_file_log.log)
+
+> 정확한 시각 정보를 사용하려면 실행환경의 시각 정보를 일치시킬 수 있는 타임서버 설정이 필요하다.
+> 실행환경이 자체 IDC에서 폐쇄망을 사용하는 경우라면 신경써야 한다.
+
+### 프로젝트 구조
+
+```
+.
+├── config
+│   └── application.yml
+├── db
+│   ├── tutorial_spring_web.mwb
+│   └── tutorial_spring_web.sql
+├── log
+│   └── .gitlock
+└── src/main
+    ├── java
+    │   └── hemoptysisheart.github.com.tutorial.spring.web
+    │       ├── borderline
+    │       │   ├── AccountBorderline.java
+    │       │   ├── AccountBorderlineImpl.java
+    │       │   ├── BorderlineConfiguration.java
+    │       │   ├── cmd
+    │       │   │   └── CreateAccountCmd.java
+    │       │   └── po
+    │       │       └── AccountPo.java
+    │       ├── configuration
+    │       │   ├── ApplicationConfiguration.java
+    │       │   ├── JpaConfiguration.java
+    │       │   └── WebMvcConfiguration.java
+    │       ├── controller
+    │       │   ├── ControllerConfiguration.java
+    │       │   ├── RootController.java
+    │       │   ├── RootControllerImpl.java
+    │       │   └── req
+    │       │       └── SignUpReq.java
+    │       ├── dao
+    │       │   ├── AccountDao.java
+    │       │   ├── AccountDaoImpl.java
+    │       │   └── DaoConfiguration.java
+    │       ├── domain
+    │       │   ├── Account.java
+    │       │   └── DomainConfiguration.java
+    │       ├── jpa
+    │       │   ├── entity
+    │       │   │   ├── AccountEntity.java
+    │       │   │   └── EntityConfiguration.java
+    │       │   └── repository
+    │       │       ├── AccountRepository.java
+    │       │       └── RepositoryConfiguration.java
+    │       ├── runner
+    │       │   └── ApplicationRunner.java
+    │       └── service
+    │           ├── AccountService.java
+    │           ├── AccountServiceImpl.java
+    │           ├── ServiceConfiguration.java
+    │           └── params
+    │               └── CreateAccountParams.java
+    └── resources
+        └── application.yml
+```
+[전체 구조](step_3_tree.txt)
