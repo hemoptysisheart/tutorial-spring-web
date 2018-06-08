@@ -7,3 +7,12 @@ spring:
       password: ''
   thymeleaf:
     cache: false
+logging:
+  path: ./log
+  file:
+    max-size: 10KB
+  pattern:
+    console: '%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} - %clr(%5p) %clr(---){faint} %clr([%15.15t]){faint} %clr(%logger#%M [L.%L]){cyan} %clr(:){faint} %m%n%wEx'
+    file: '%d{yyyy-MM-dd HH:mm:ss.SSS} --- %p --- [%t] %logger --- %m%n%wEx'
+  level:
+    hemoptysisheart.github.com.tutorial.spring.web: trace

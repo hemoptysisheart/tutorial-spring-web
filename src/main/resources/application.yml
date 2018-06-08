@@ -21,3 +21,6 @@ spring:
       max-chunk-size: 0
     servlet:
       content-type: text/html
+logging:
+  level:
+    root: warn
