@@ -9,5 +9,5 @@ public class ApplicationRunner {
 }
 ```
 
-`java`를 사용한 실행 명령은, `main` 메서드를 찾아 실횅한다.
+`java`를 사용한 실행 명령은, `main` 메서드를 찾아 실행한다.
 `main` 메서드는 실행할 내용이 없으므로, 애플리케이션은 바로 종료된다.
