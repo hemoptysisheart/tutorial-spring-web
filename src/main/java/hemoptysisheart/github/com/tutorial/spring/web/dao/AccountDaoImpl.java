@@ -38,4 +38,32 @@ class AccountDaoImpl implements AccountDao {
         }
         return account;
     }
+
+    @Override
+    public Account select(String nickname) {
+        if (log.isTraceEnabled()) {
+            log.trace(format("select args : nickname=%s", nickname));
+        }
+
+        Account account = this.accountRepository.findOneByNickname(nickname);
+
+        if (log.isTraceEnabled()) {
+            log.trace(format("select return : %s", account));
+        }
+        return account;
+    }
+
+    @Override
+    public Account selectWhereEmail(String email) {
+        if (log.isTraceEnabled()) {
+            log.trace(format("selectWhereEmail args : email=%s", email));
+        }
+
+        Account account = this.accountRepository.findOneByEmail(email);
+
+        if (log.isTraceEnabled()) {
+            log.trace(format("selectWhereEmail return : %s", account));
+        }
+        return account;
+    }
 }
