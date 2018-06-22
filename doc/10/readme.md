@@ -84,3 +84,59 @@ public class BasicAccountDetails implements AccountDetails {
 }
 ```
 [BasicAccountDetails.java](../../src/main/java/hemoptysisheart/github/com/tutorial/spring/web/security/BasicAccountDetails.java)
+
+### `AccountDetailsService` - 인증용 계정 정보 로더
+
+Spring Security는 로그인 할 때 유저 정보(`UserDetails`)를 읽기 위해 `UserDetialsService`를 사용한다.
+애플리케이션에 특화된 유저 정보를 읽기 위해 `AccountDetailsService`를 정의하고 구현한다.
+
+```java
+package hemoptysisheart.github.com.tutorial.spring.web.security;
+
+// ... 생략 ...
+
+@Transactional
+public interface AccountDetailsService extends UserDetailsService {
+    @Override
+    AccountDetails loadUserByUsername(String username) throws UsernameNotFoundException;
+}
+```
+[AccountDetailsService.java](../../src/main/java/hemoptysisheart/github/com/tutorial/spring/web/security/AccountDetailsService.java)
+
+계정마다 유일한 속성이 `nickname`과 `email`의 2가지가 있으므로 이 두가지 값을 로그인 키로 사용할 수 있다.
+사용량 통계를 통해 `nickname`을 많이 쓰는지, `email`을 많이 쓰는지 확인해 많이 쓰는 속성을 먼저 확인하도록 하는 방식으로 DB 부하를 낮출 수 있다.
+만약, 최근 통계를 실시간으로 획득할 수 있다면 최근 통계를 바탕으로 자동 선택하도록 만들 수도 있다.
+
+```java
+package hemoptysisheart.github.com.tutorial.spring.web.security;
+
+// ... 생략 ...
+
+@Service
+class AccountDetailsServiceImpl implements AccountDetailsService {
+    @Autowired
+    private AccountDao accountDao;
+
+    @Override
+    public AccountDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Account account = this.accountDao.select(username);
+        if (null == account) {
+            account = this.accountDao.selectWhereEmail(username);
+        }
+
+        if (null == account) {
+            throw new UsernameNotFoundException(format("account does not exist : username=%s", username));
+        }
+
+        AccountDetails details = new BasicAccountDetails(
+                account.getId(),
+                account.getNickname(),
+                account.getEmail(),
+                account.getPassword()
+        );
+
+        return details;
+    }
+}
+```
+[AccountDetailsServiceImpl.java](../../src/main/java/hemoptysisheart/github/com/tutorial/spring/web/security/AccountDetailsServiceImpl.java)
