@@ -1,21 +1,55 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8"/>
     <title>Index</title>
 </head>
 <body>
 <header>
-    <nav>
+    <nav sec:authorize="anonymous">
         <a href="index.html" th:href="@{/}">TOP</a>
         <a href="signup.html" th:href="@{/signup}">sign-up</a>
         <a href="login.html" th:href="@{/login}">log-in</a>
+    </nav>
+    <nav sec:authorize="authenticated">
+        <a href="index.html" th:href="@{/}">TOP</a>
+        <form action="index.html" method="post" th:action="@{/logout}">
+            <button>log-out</button>
+        </form>
     </nav>
 </header>
 <main>
     <h1>Index Page</h1>
     <p>Welcome!!!</p>
+    <section>
+        <h2>AUTHENTICATION</h2>
+        <p th:text="${#authentication}">authentication</p>
+        <dl th:object="${#authentication}">
+            <dt>CLASS</dt>
+            <dd th:text="*{class}">class</dd>
+            <dt>NAME</dt>
+            <dd th:text="*{name}">name</dd>
+            <dt>AUTHENTICATED</dt>
+            <dd th:text="*{authenticated}">authenticated</dd>
+            <dt>DETAILS</dt>
+            <dd th:text="*{details}">details</dd>
+            <dt>PRINCIPAL</dt>
+            <dd th:text="*{principal}">principal</dd>
+            <dt>AUTHORITIES</dt>
+            <dd th:each="authority : *{authorities}" th:text="${authority}"></dd>
+        </dl>
+    </section>
+    <section>
+        <h2>AUTHORIZATION</h2>
+        <p th:text="${#authorization}">authorization</p>
+        <dl th:object="${#authorization}">
+            <dt>CLASS</dt>
+            <dd th:text="*{class}">class</dd>
+        </dl>
+    </section>
 </main>
+<hr/>
 <footer>
     <dl>
         <dt>TIMESTAMP</dt>

@@ -224,3 +224,49 @@ class AccountServiceImpl implements AccountService {
 }
 ```
 [AccountServiceImpl.java](../../src/main/java/hemoptysisheart/github/com/tutorial/spring/web/service/AccountServiceImpl.java)
+
+## 로그인 상태에 따른 UI 선택
+
+게스트일 땐 계정 등록 혹은 로그인 페이지로 갈 수 있는 GNB(Global Navigation Bar)를 보이고,
+로그인 한 후에는 로그안웃 혹은 기타 기능을 사용할 수 있는 메뉴를 보여준다.
+
+```xml
+<dependency>
+    <groupId>org.thymeleaf.extras</groupId>
+    <artifactId>thymeleaf-extras-springsecurity4</artifactId>
+</dependency>
+```
+[pom.xml](../../pom.xml#L60)
+
+루트 패스(`/`)의 템플릿을 수정한다.
+
+* `sec:authorize="anonymous"` : 로그인 하지 않은 경우의 GNB.
+* `sec:authorize="authenticated"` : 로그인 한 경우의 GNB.
+
+```html
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<!-- 생략 -->
+<header>
+    <nav sec:authorize="anonymous">
+        <a href="index.html" th:href="@{/}">TOP</a>
+        <a href="signup.html" th:href="@{/signup}">sign-up</a>
+        <a href="login.html" th:href="@{/login}">log-in</a>
+    </nav>
+    <nav sec:authorize="authenticated">
+        <a href="index.html" th:href="@{/}">TOP</a>
+        <form action="index.html" method="post" th:action="@{/logout}">
+            <button>log-out</button>
+        </form>
+    </nav>
+</header>
+<!-- 생략 -->
+```
+[index.html](../../templates/_/index.html)
+
+![로그인 하지 않은 경우의 루트 패스(anonymous)](step_2_root_path_guest.png)
+![로그인 한 경우의 루트 패스(authenticated)](step_2_root_path_login_user.png)
+
+> [`_/signup.html`](../../templates/_/signup.html)과 [`_/newbie.html`](../../templates/_/newbie.html) 템플릿의 경우,
+> 사용하는 경우가 고정되어 있기 때문에 [`_/index.html`](../../templates/_/index.html)와 달리
+> 분기를 추가하지 않음.
