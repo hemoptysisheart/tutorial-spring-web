@@ -6,6 +6,7 @@ import hemoptysisheart.github.com.tutorial.spring.web.jpa.entity.AccountEntity;
 import hemoptysisheart.github.com.tutorial.spring.web.service.params.CreateAccountParams;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -26,6 +27,8 @@ class AccountServiceImpl implements AccountService {
 
     @Autowired
     private AccountDao accountDao;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // hemoptysisheart.github.com.tutorial.spring.web.service.AccountService
@@ -39,7 +42,8 @@ class AccountServiceImpl implements AccountService {
 
         Instant start = Instant.now();
 
-        Account account = new AccountEntity(params.getEmail(), params.getNickname(), params.getPassword());
+        Account account = new AccountEntity(params.getEmail(), params.getNickname(),
+                passwordEncoder.encode(params.getPassword()));
         account = this.accountDao.insert(account);
 
         Instant end = Instant.now();
