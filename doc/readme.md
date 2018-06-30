@@ -10,3 +10,4 @@
 1. [CH.08 - 프로젝트 구조 개선하기](08/readme.md)
 1. [CH.09 - 안정성 개선](09/readme.md)
 1. [CH.10 - 인증](10/readme.md)
+1. [CH.XX - Git 히스토리 정리](XX/readme.md)
