@@ -140,3 +140,87 @@ class AccountDetailsServiceImpl implements AccountDetailsService {
 }
 ```
 [AccountDetailsServiceImpl.java](../../src/main/java/hemoptysisheart/github/com/tutorial/spring/web/security/AccountDetailsServiceImpl.java)
+
+### 애플리케이션 설정
+
+설정 파일을 추가하고 Spring Security를 활성화한다.
+
+```java
+package hemoptysisheart.github.com.tutorial.spring.web.configuration;
+
+// ... 생략 ...
+
+@Configuration
+@EnableWebSecurity
+public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
+    // ... 생략 ...
+}
+```
+[WebSecurityConfiguration.java](../../src/main/java/hemoptysisheart/github/com/tutorial/spring/web/configuration/WebSecurityConfiguration.java)
+
+Spring Security의 기본 비밀번호 암호화 컴포넌트(단방향)인 `BCryptPasswordEncoder` 인스턴스를 생성, 등록한다.
+
+```java
+@Bean
+public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+}
+```
+[passwordEncoder()](../../src/main/java/hemoptysisheart/github/com/tutorial/spring/web/configuration/WebSecurityConfiguration.java#L33)
+
+로그인 할 때 `[AccountDetailsService](../../src/main/java/hemoptysisheart/github/com/tutorial/spring/web/security/AccountDetailsService.java)` 인스턴스로 인증 정보를 읽어오고
+`BCryptPasswordEncoder`로 비밀번호를 비교 하도록 설정한다.
+
+```java
+@Override
+protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    auth.userDetailsService(this.accountDetailsService)
+            .passwordEncoder(passwordEncoder());
+}
+```
+[configure(AuthenticationManagerBuilder auth)](../../src/main/java/hemoptysisheart/github/com/tutorial/spring/web/configuration/WebSecurityConfiguration.java#L42)
+
+게스트로 회원가입, 로그인 페이지에 접속할 수 있도록 페이지를 설정한다.
+
+```java
+@Override
+protected void configure(HttpSecurity http) throws Exception {
+    http.formLogin();
+    http.logout();
+    http.authorizeRequests()
+            .antMatchers("/").permitAll()
+            .antMatchers("/signup", "/login", "/login/**").anonymous();
+}
+```
+[configure(HttpSecurity http)](../../src/main/java/hemoptysisheart/github/com/tutorial/spring/web/configuration/WebSecurityConfiguration.java#L48)
+
+마지막으로, 로그인 할 때 `PasswordEncoder`를 사용해 비밀번호를 비교할 수 있도록
+계정을 등록할 때 해시한 비밀번호를 저장하도록 계정 등록 로직을 수정한다.
+
+> DB에 저장하는 비밀번호가 평문에서 해시(단방향 암호화)로 바뀌기 때문에, 기존 데이터를 삭제하고 새로 등록해야 한다.
+
+```java
+package hemoptysisheart.github.com.tutorial.spring.web.service;
+
+// ... 생략 ...
+
+@Service
+class AccountServiceImpl implements AccountService {
+    // ... 생략 ...
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Override
+    public Account create(CreateAccountParams params) {
+        // ... 생략 ...
+
+        Account account = new AccountEntity(params.getEmail(), params.getNickname(),
+                passwordEncoder.encode(params.getPassword()));
+
+        // ... 생략 ...
+        return account;
+    }
+}
+```
+[AccountServiceImpl.java](../../src/main/java/hemoptysisheart/github/com/tutorial/spring/web/service/AccountServiceImpl.java)

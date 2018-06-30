@@ -1,0 +1,7 @@
+2018-06-30 16:22:21.681 - TRACE --- [nio-8080-exec-8] hemoptysisheart.github.com.tutorial.spring.web.security.AccountDetailsServiceImpl#loadUserByUsername [L.33] : loadUserByUsername args : username=a@a
+2018-06-30 16:22:21.682 - TRACE --- [nio-8080-exec-8] hemoptysisheart.github.com.tutorial.spring.web.dao.AccountDaoImpl#select [L.45] : select args : nickname=a@a
+2018-06-30 16:22:21.684 - TRACE --- [nio-8080-exec-8] hemoptysisheart.github.com.tutorial.spring.web.dao.AccountDaoImpl#select [L.51] : select return : null
+2018-06-30 16:22:21.685 - TRACE --- [nio-8080-exec-8] hemoptysisheart.github.com.tutorial.spring.web.dao.AccountDaoImpl#selectWhereEmail [L.59] : selectWhereEmail args : email=a@a
+2018-06-30 16:22:21.690 - TRACE --- [nio-8080-exec-8] hemoptysisheart.github.com.tutorial.spring.web.dao.AccountDaoImpl#selectWhereEmail [L.65] : selectWhereEmail return : AccountEntity{id=1, email='a@a', nickname='AA', password=[ PROTECTED ]}
+2018-06-30 16:22:21.691 -  INFO --- [nio-8080-exec-8] hemoptysisheart.github.com.tutorial.spring.web.security.AccountDetailsServiceImpl#loadUserByUsername [L.56] : log-in load success : username=a@a
+2018-06-30 16:22:21.691 - TRACE --- [nio-8080-exec-8] hemoptysisheart.github.com.tutorial.spring.web.security.AccountDetailsServiceImpl#loadUserByUsername [L.66] : loadUserByUsername return : {id=1, nickname=AA, email=a@a}
