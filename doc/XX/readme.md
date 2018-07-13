@@ -83,4 +83,41 @@
 14 | * 3c03cac - (origin/hellosamuel/CH1) (EDIT) 문서 오탈자수정. (6 weeks ago) <Lee Samuel>
 15 * |   4ed8393 - Merge branch 'ch9_enhance_stability' (5 weeks ago) <hemoptysisheart>
 ```
-![그대로 병합하면 꼬이는 커밋 네트워크 상태](step_2_before_refine.png)
+![그대로 병합하면 꼬이는 커밋 네트워크 상태](step_2_before_refine_shell.png)
+
+이대로는 알아보기가 어려우니 `origin` 저장소(GitHub)에 푸시하고 [커밋 네트워크](/hemoptysisheart/tutorial-spring-web/network)에서 확인하면,
+
+![병합하면 꼬이는 커밋 네트워크](step_2_before_refine_github.png)
+
+꼬일 수 밖에 없는 커밋 네트워크를 쉽게 확인할 수 있다.
+
+임시 브랜치 `chXX_dummy`를 만들어 확인해보자. 12~13번 줄에서 꼬이는 걸 확인할 수 있다.
+
+```
+00 *   312dd8c - (chXX_dummy) Merge branch 'ch10_authentication' into chXX_dummy (7 minutes ago) <hemoptysisheart>
+01 |\
+02 | * d09aa5a - (origin/ch10_authentication, ch10_authentication) (FIX) 마크다운 오류 수정. (31 minutes ago) <hemoptysisheart>
+03 | * bb2f62f - (FIX) 템플릿 로딩 에러에 대응. (13 days ago) <hemoptysisheart>
+04 | * d803ea7 - (ADD) C10S2 - 로그인 상태에 따른 UI 선택 (13 days ago) <hemoptysisheart>
+05 | * 302fdd2 - (ADD) C10S1R4 - 애플리케이션 설정 (13 days ago) <hemoptysisheart>
+06 | * 74c31dd - (ADD) C10S1R3 - 인증용 계정 정보 로더 (3 weeks ago) <hemoptysisheart>
+07 | * ac2c133 - (ADD) C10S1R2 - 웹 세션의 유저 정보 저장용 타입 정의 (4 weeks ago) <hemoptysisheart>
+08 | * 3b24968 - (ADD) C10S1R1 - 보안 모듈 추가 (5 weeks ago) <hemoptysisheart>
+09 | * e6dc2ab - (ADD) C10 - 인증 (5 weeks ago) <hemoptysisheart>
+10 * |   c420f27 - (origin/master, origin/HEAD, master) Merge pull request #1 from hemoptysisheart/hellosamuel/CH1 (5 weeks ago) <H2>
+11 |\ \
+12 | |/
+13 |/|
+14 | * 3c03cac - (origin/hellosamuel/CH1) (EDIT) 문서 오탈자수정. (6 weeks ago) <Lee Samuel>
+15 * |   4ed8393 - Merge branch 'ch9_enhance_stability' (5 weeks ago) <hemoptysisheart>
+```
+![꼬이는 `chXX_dummy` 브랜치](step_2_if_you_merge_ch10_shell.png)
+
+![GitHub에서 꼬이는 `chXX_dummy` 브랜치](step_2_if_you_merge_ch10_github.png)
+
+> 보기 싫으니 GitHub의 임시 브랜치를 삭제하자.
+> ```
+> ➜  tutorial-spring-web git:(chXX_cleanup_git_history) ✗ git push origin :chXX_dummy
+> To hemoptysisheart.github.com:hemoptysisheart/tutorial-spring-web.git
+>  - [deleted]         chXX_dummy
+> ```
