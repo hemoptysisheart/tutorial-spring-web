@@ -168,7 +168,7 @@ public PasswordEncoder passwordEncoder() {
 ```
 [passwordEncoder()](../../src/main/java/hemoptysisheart/github/com/tutorial/spring/web/configuration/WebSecurityConfiguration.java#L33)
 
-로그인 할 때 `[AccountDetailsService](../../src/main/java/hemoptysisheart/github/com/tutorial/spring/web/security/AccountDetailsService.java)` 인스턴스로 인증 정보를 읽어오고
+로그인 할 때 [`AccountDetailsService`](../../src/main/java/hemoptysisheart/github/com/tutorial/spring/web/security/AccountDetailsService.java) 인스턴스로 인증 정보를 읽어오고
 `BCryptPasswordEncoder`로 비밀번호를 비교 하도록 설정한다.
 
 ```java
