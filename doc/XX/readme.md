@@ -230,3 +230,97 @@ Applying: (FIX) 마크다운 오류 수정.
 26 * |   4ed8393 - Merge branch 'ch9_enhance_stability' (5 weeks ago) <hemoptysisheart>
 ```
 ![워본 커밋과 `rebase` 후의 커밋](step_2_rebased_and_original.png)
+
+## STEP 3 - 정리한 커밋 네트워크 반영하기
+
+이렇게 정리된 커밋을 `master`에 반영한다.
+
+```
+➜  tutorial-spring-web git:(ch10_authentication) git checkout master
+Switched to branch 'master'
+Your branch is up to date with 'origin/master'.
+➜  tutorial-spring-web git:(master) git merge --no-ff ch10_authentication
+Merge made by the 'recursive' strategy.
+ config/application.yml                                                                                   |   1 +
+ doc/10/readme.md                                                                                         | 272 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ doc/10/step_1_login_by_email.log                                                                         |   7 ++++
+ doc/10/step_1_login_by_nickname.log                                                                      |   6 +++
+ doc/10/step_2_root_path_guest.png                                                                        | Bin 0 -> 245734 bytes
+ doc/10/step_2_root_path_login_user.png                                                                   | Bin 0 -> 242048 bytes
+ doc/readme.md                                                                                            |   3 +-
+ pom.xml                                                                                                  |   8 ++++
+ src/main/java/hemoptysisheart/github/com/tutorial/spring/web/configuration/WebSecurityConfiguration.java |  56 ++++++++++++++++++++++++++
+ src/main/java/hemoptysisheart/github/com/tutorial/spring/web/dao/AccountDao.java                         |  32 +++++++++++++++
+ src/main/java/hemoptysisheart/github/com/tutorial/spring/web/dao/AccountDaoImpl.java                     |  28 +++++++++++++
+ src/main/java/hemoptysisheart/github/com/tutorial/spring/web/security/AccountDetails.java                |  89 +++++++++++++++++++++++++++++++++++++++++
+ src/main/java/hemoptysisheart/github/com/tutorial/spring/web/security/AccountDetailsService.java         |  33 ++++++++++++++++
+ src/main/java/hemoptysisheart/github/com/tutorial/spring/web/security/AccountDetailsServiceImpl.java     |  70 ++++++++++++++++++++++++++++++++
+ src/main/java/hemoptysisheart/github/com/tutorial/spring/web/security/BasicAccountDetails.java           |  65 ++++++++++++++++++++++++++++++
+ src/main/java/hemoptysisheart/github/com/tutorial/spring/web/security/SecurityConfiguration.java         |  10 +++++
+ src/main/java/hemoptysisheart/github/com/tutorial/spring/web/service/AccountServiceImpl.java             |   6 ++-
+ templates/_/index.html                                                                                   |  38 +++++++++++++++++-
+ templates/_/newbie.html                                                                                  |   1 +
+ templates/_/signup.html                                                                                  |   1 +
+ 20 files changed, 722 insertions(+), 4 deletions(-)
+ create mode 100644 doc/10/readme.md
+ create mode 100644 doc/10/step_1_login_by_email.log
+ create mode 100644 doc/10/step_1_login_by_nickname.log
+ create mode 100644 doc/10/step_2_root_path_guest.png
+ create mode 100644 doc/10/step_2_root_path_login_user.png
+ create mode 100644 src/main/java/hemoptysisheart/github/com/tutorial/spring/web/configuration/WebSecurityConfiguration.java
+ create mode 100644 src/main/java/hemoptysisheart/github/com/tutorial/spring/web/security/AccountDetails.java
+ create mode 100644 src/main/java/hemoptysisheart/github/com/tutorial/spring/web/security/AccountDetailsService.java
+ create mode 100644 src/main/java/hemoptysisheart/github/com/tutorial/spring/web/security/AccountDetailsServiceImpl.java
+ create mode 100644 src/main/java/hemoptysisheart/github/com/tutorial/spring/web/security/BasicAccountDetails.java
+ create mode 100644 src/main/java/hemoptysisheart/github/com/tutorial/spring/web/security/SecurityConfiguration.java
+ ```
+
+> ```
+> git checkout master
+> git merge --no-ff ch10_authentication
+> ```
+
+다음과 같은 커밋 네트워크로 정리된다.
+
+```
+*   8b15866 - (master) Merge branch 'ch10_authentication' (19 minutes ago) <hemoptysisheart>
+|\
+| * f824f7b - (origin/ch10_authentication, ch10_authentication) (FIX) 마크다운 오류 수정. (4 weeks ago) <hemoptysisheart>
+| * a25faac - (FIX) 템플릿 로딩 에러에 대응. (4 weeks ago) <hemoptysisheart>
+| * 4f5e646 - (ADD) C10S2 - 로그인 상태에 따른 UI 선택 (4 weeks ago) <hemoptysisheart>
+| * 27d668a - (ADD) C10S1R4 - 애플리케이션 설정 (4 weeks ago) <hemoptysisheart>
+| * 4b33f68 - (ADD) C10S1R3 - 인증용 계정 정보 로더 (4 weeks ago) <hemoptysisheart>
+| * d6dc847 - (ADD) C10S1R2 - 웹 세션의 유저 정보 저장용 타입 정의 (4 weeks ago) <hemoptysisheart>
+| * 19dd43b - (ADD) C10S1R1 - 보안 모듈 추가 (4 weeks ago) <hemoptysisheart>
+| * 660ba9a - (ADD) C10 - 인증 (4 weeks ago) <hemoptysisheart>
+|/
+*   c420f27 - (origin/master, origin/HEAD) Merge pull request #1 from hemoptysisheart/hellosamuel/CH1 (9 weeks ago) <H2>
+```
+
+커밋 네트워크를 정리하지 않은 채 병함한 경우와 달리 커밋 네트워크가 교차하지 않는다.
+
+이번은 두 개의 브랜치에서 한 작업을 반영했기 때문에 한 번의 교차만 일어나고,
+병합 커밋을 포함해 각 커밋도 각 브랜치 분량이 따로 생성되었다.
+
+하지만 작업자가 늘어나고 작업 브랜치도 늘어날 경우,
+커밋 네트워크는 매우 복잡해지며 어떤 작업이 어떤 과정을 거쳐 프로그램에 반영되었는지 그 과정을 알기 어렵게 된다.
+
+각각의 작업이 언제 어떻게 진해됐는지는 별도의 프로젝트 관리 프로그램의 간트 차트 등을 이용하고,
+커밋 네트워크는 시간 문제는 제외하고 변화의 선후 관계를 보는 도구로 사용해야 한다.
+
+```
+*   c420f27 - (origin/master, origin/HEAD) Merge pull request #1 from hemoptysisheart/hellosamuel/CH1 (9 weeks ago) <H2>
+|\
+| * 3c03cac - (origin/hellosamuel/CH1) (EDIT) 문서 오탈자수정. (10 weeks ago) <Lee Samuel>
+* |   4ed8393 - Merge branch 'ch9_enhance_stability' (9 weeks ago) <hemoptysisheart>
+|\ \
+| |/
+|/|
+| * 7a4b947 - (ADD) C9S3 - 모니터링 로그 (10 weeks ago) <hemoptysisheart>
+| * d7f1660 - (ADD) C9S2 - 디버깅 로그 (2 months ago) <hemoptysisheart>
+| * 063f71d - (ADD) C9S1 - 코드 공통화 : 폼 페이지 출력 (2 months ago) <hemoptysisheart>
+|/
+*   c02b547 - Merge branch 'ch8_enhance_project_structure' (2 months ago) <hemoptysisheart>
+```
+
+![정리해서 병합한 커밋 네트워크](step_3_merge_after_rebase.png)
