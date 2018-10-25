@@ -6,9 +6,9 @@
 
 프로젝트 저장소에 다음 순서로 작업이 발생했다.
 
-1. `master` 브랜치가 c02b5479d862eabb3bc1ce0157f36d1c888f75b4 커밋일 때
+1. `master` 브랜치가 `c02b5479d862eabb3bc1ce0157f36d1c888f75b4` 커밋일 때
 [CH.09 - 안정성 개선](../09/readme.md)의 `ch9_enhance_stablility` 브랜치가 작업을 시작.
-1. `master` 브랜치가 동일하게 c02b5479d862eabb3bc1ce0157f36d1c888f75b4 커밋일 때
+1. `master` 브랜치가 동일하게 `c02b5479d862eabb3bc1ce0157f36d1c888f75b4` 커밋일 때
 수정사항 [`CH1`](/hellosamuel/tutorial-spring-web/tree/CH1)이 발생.
 1. [`CH1`](/hellosamuel/tutorial-spring-web/tree/CH1)에서 [Pull Request #1](/hemoptysisheart/tutorial-spring-web/pull/1)가 생성.
 1. [CH.09 - 안정성 개선](../09/readme.md)의 `ch9_enhance_stablility` 브랜치가 작업을 끝내고 저장소에 반영.
@@ -60,12 +60,12 @@
 
 ### 문제 있는 지금 상태
 
-마침 이대로 병합하면 네트워크가 교차하고, 네트워크를 그리는 순서를 바꾼다 해도 교차를 없앨 수 없는 브랜치가 있다. 바로 03번 줄에 있는 bb2f62f5f67f90ccb68330fdaad77c9004e2a394 커밋을 가진 `ch10_authentication` 브랜치이다.
+마침 이대로 병합하면 네트워크가 교차하고, 네트워크를 그리는 순서를 바꾼다 해도 교차를 없앨 수 없는 브랜치가 있다. 바로 03번 줄에 있는 `bb2f62f5f67f90ccb68330fdaad77c9004e2a394` 커밋을 가진 `ch10_authentication` 브랜치이다.
 
-1. 4ed8393bb9bd11ccf2d73529ee516a2ba246657e 커밋에서 `ch10_authentication` 브랜치를 작성, 작업 시작.
+1. `4ed8393bb9bd11ccf2d73529ee516a2ba246657e `커밋에서 `ch10_authentication` 브랜치를 작성, 작업 시작.
 1. [`CH1`](/hellosamuel/tutorial-spring-web/tree/CH1)에서 [Pull Request #1](/hemoptysisheart/tutorial-spring-web/pull/1)가 생성.
 1. [Pull Request #1](/hemoptysisheart/tutorial-spring-web/pull/1)이 `master` 브랜치에 병합.
-1. `ch10_authentication` 브랜치가 작업을 끝내고 d09aa5a604363a025c072ed039654cf6181fbc7b 커밋에서 병합해야 하는 상태가 됨.
+1. `ch10_authentication` 브랜치가 작업을 끝내고 `d09aa5a604363a025c072ed039654cf6181fbc7b` 커밋에서 병합해야 하는 상태가 됨.
 
 ```
 00 * d09aa5a - (ch10_authentication) (FIX) 마크다운 오류 수정. (4 minutes ago) <hemoptysisheart>
