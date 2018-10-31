@@ -8,9 +8,9 @@
     <version>1.0.0-SNAPSHOT</version>
     <description>Spring Boot를 사용한 웹 애플리케이션 개발 튜토리얼.</description>
     <properties>
-        <maven.compiler.source>10</maven.compiler.source>
-        <maven.compiler.target>10</maven.compiler.target>
-        <spring-boot.version>2.0.2.RELEASE</spring-boot.version>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <spring-boot.version>2.1.0.RELEASE</spring-boot.version>
     </properties>
     <build>
         <plugins>
