@@ -2,9 +2,10 @@
 spring:
   datasource:
     hikari:
-      jdbc-url: jdbc:mysql://localhost/tutorial_spring_web?connectionCollation=utf8mb4_bin
-      username: root
-      password: ''
+      jdbc-url: jdbc:mysql://localhost/tutorial_spring_web?connectionCollation=utf8mb4_bin&allowPublicKeyRetrieval=true&useSSL=false
+      username: tutorial_spring_web
+      password: '(Cgfy?y6Bs6Dk3FjKZ}RhpurqJ447{d+ZQK8JLGx9tWC?QC2G+?Xp3mHHn[*HzPh'
+      maximum-pool-size: 1
   thymeleaf:
     cache: false
     prefix: file:./templates/
