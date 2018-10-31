@@ -56,7 +56,7 @@
         <dd>
             <!--/*@thymesVar id="timestamp" type="java.time.ZonedDateTime"*/-->
             <time th:datetime="${timestamp}"
-                  th:text="${#temporals.format(timestamp, 'yyyy-MM-dd HH:mm VV')}">timestamp
+                  th:text="${#temporals.format(timestamp, 'yyyy-MM-dd HH:mm:ss.SSS VV')}">timestamp
             </time>
         </dd>
     </dl>
